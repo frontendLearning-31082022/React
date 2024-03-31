@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.thymeleaf.org ">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" type="text/css" media="all" href="/css/workbook_findword.css"
+        th:href="@{/css/workbook_findword.css}" />
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.10.3/babel.min.js" crossorigin></script>
+
+
+    <script>
+        const ip = '192.168.1.45:8080';
+    </script>
+
+</head>
+
+<body>
+
+    <div id="root"></div>
+
+
+    <script type="text/babel" data-presets="react,stage-3">
+        class Main extends React.Component {
+            constructor(props) {
+                super(props);
+
+                this.state = { results: [],word:'' };
+
+                this.refInput = React.createRef();
+                this.prepareData = this.prepareData.bind(this);
+                this.setWord = this.setWord.bind(this);
+            }
+
+
+
+            prepareData() {
+
+
+                this.setState(prevState => ({
+                    results: []
+                }));
+
+                const done = fetch(`http://${ip}/workbook/findWord/getData?word=${this.state.word}`)
+                    .then(x => x.json()).then(y => {
+
+                        // const word=req.toLowerCase();
+                        // y = y.map(obj => {
+                        //     debugger;
+                        //     obj.text=obj.text.toLowerCase().replace(word,"<span class=\"bold\">"+word+"</span>");
+                        //     return obj;
+                        // })
+
+                        this.state.results.push(...y);
+
+                        this.setState(prevState => ({
+                            results: this.state.results
+                        }));
+
+
+                    });
+            }
+
+            setWord(e){
+                this.setState({word: event.target.value});
+            }
+
+
+
+            render() {
+                const mark=(text,type)=>{
+                    const start=text.indexOf(this.state.word);
+                    const first=text.substring(0,start);
+                    const se=text.substring(start+this.state.word.length,text.length);
+                    if(type=='f')return first;
+                    if(type=='s')return se;
+
+                    return '';
+                }
+
+                const listItems = this.state.results.map((d) =>
+                
+
+
+                    <li key={d.nameFile}>
+                        <div className="name">{d.nameFile}</div>
+                        <div className="page">{d.page}</div>
+                        <div className="dots">...</div>
+                        <div className="text">{mark(d.text,'f')}<span className='marked'>{this.state.word}</span>{mark(d.text,'s')}</div>
+
+                    </li>);
+                // const listItems = this.state.results.length;
+
+                return (
+                    <div>
+                        <div className="find">
+                            <input type="text" value={this.state.word} onChange={this.setWord} id="findword" />
+                            <button onClick={this.prepareData}>найти</button>
+                        </div>
+                        <ul>
+                            {listItems}
+                        </ul>
+
+                    </div>
+                );
+            }
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"))
+        root.render(<Main />);
+
+
+    </script>
+
+</body>
+
+</html>
