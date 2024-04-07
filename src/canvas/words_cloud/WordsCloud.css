@@ -2,16 +2,8 @@ svg text.blink {
   animation: blink 2s ease-out;
 }
 
-body {
-  text-align: center;
-  background-color: #000000;
-  color: #ffffff;
-  position: relative;
-}
-
 #tagi {
-  width: 70%;
-  margin: 250px auto;
+  width: 100%;
 }
 
 @keyframes blink {
