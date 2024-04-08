@@ -10,7 +10,6 @@ header {
 .task_list {
     width: 70%;
 
-
     .task {
         word-wrap: break-word;
 
@@ -21,13 +20,8 @@ header {
                 width: inherit;
                 height: inherit;
                 float: left;
+                margin: 0px 18px 10px 0px;
             }
         }
     }
-}
-
-
-.control {
-    width: 28%;
-    height: 100vh;
 }

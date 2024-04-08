@@ -1,0 +1,63 @@
+@mixin panel {
+  background-color: rgb(60, 63, 65);
+  border-top: 1px solid rgb(85, 85, 85);
+  border-bottom: 1px solid rgb(40, 40, 40);
+  border-left: 1px solid rgb(85, 85, 85);
+  border-right: 1px solid rgb(40, 40, 40);
+}
+
+.App {
+  display: grid;
+  grid-template-columns: 5% 90% 5%;
+
+  header {
+    grid-column: 1 / 4;
+    order: 0;
+  }
+
+  .content {
+    order: 2;
+  }
+}
+
+.App::before {
+  content: "";
+  display: inline-block;
+  order: 1;
+}
+
+.App::after {
+  content: "";
+  display: inline-block;
+  order: 4;
+}
+
+header,
+.control,
+.App::after,
+.App::before,
+body {
+  @include panel;
+}
+
+.control {
+  width: 30%;
+  height: 100vh;
+
+  .skills_cloud_title {
+    font-weight: bold;
+    color: rgb(187, 187, 187);
+    display: flex;
+    justify-content: end;
+    margin: 20px 20px 0px 0px;
+  }
+}
+
+.task_list {
+  color: rgb(187, 187, 187);
+  background-color: #2b2b2b;
+
+  .task {
+    margin: 2% 2% 2% 2%;
+  }
+}
