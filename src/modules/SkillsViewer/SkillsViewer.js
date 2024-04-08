@@ -3,6 +3,7 @@ import './excel.css';
 import './SkillsViewer.scss';
 
 import WordsCloud from '../../canvas/words_cloud/WordsCloud';
+import WordCarousel from '../../canvas/word_carousel/WordCarousel';
 
 const sortType = {
     relevance: 'relevance'
@@ -47,7 +48,7 @@ export default class SkillsViewer extends Component {
                         task[title] = x.children[i].textContent;
                         if (title === 'Условие задачи') task[title] = x.children[i].outerHTML;
                     });
-                    if(task['Ссылка git']!='')tasks.push(task);
+                    if (task['Ссылка git'] != '') tasks.push(task);
                 });
                 const promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
                 await promisedSetState({ tasks: tasks });
@@ -113,6 +114,13 @@ export default class SkillsViewer extends Component {
                     </section>
 
                     <section className='control'>
+                        <div className='keywords_carousel'>
+                            <div className='skills_cloud_title'>
+                                <img src='./parts_imgs/folder.png' className='folder_img'></img>
+                                keywords</div>
+                            <WordCarousel words={''} />
+                        </div>
+
                         <div className='skills_cloud'>
                             <div className='skills_cloud_title'>
                                 <img src='./parts_imgs/folder.png' className='folder_img'></img>
