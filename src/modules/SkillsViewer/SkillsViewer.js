@@ -2,14 +2,18 @@ import React, { Component } from 'react'
 import './excel.css';
 import './SkillsViewer.scss';
 
+import WordsCloud from '../../canvas/words_cloud/WordsCloud';
+
 const sortType = {
     relevance: 'relevance'
 }
+const maxWords = 20;
 
 export default class SkillsViewer extends Component {
     constructor(props) {
         super(props);
         this.state = { titles: [], tasks: [] }
+        this.skills = [];
 
         this.loadData = this.loadData.bind(this);
         this.sortTasks = this.sortTasks.bind(this);
@@ -43,7 +47,7 @@ export default class SkillsViewer extends Component {
                         task[title] = x.children[i].textContent;
                         if (title === 'Условие задачи') task[title] = x.children[i].outerHTML;
                     });
-                    tasks.push(task);
+                    if(task['Ссылка git']!='')tasks.push(task);
                 });
                 const promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
                 await promisedSetState({ tasks: tasks });
@@ -51,6 +55,27 @@ export default class SkillsViewer extends Component {
             .catch(function (err) {
                 console.log('Failed to fetch page: ', err);
             });
+
+        const splitParts = (array, n) => {
+            let [...arr] = array;
+            var res = [];
+            while (arr.length) {
+                res.push(arr.splice(0, n));
+            }
+            return res;
+        }
+        const client = new XMLHttpRequest();
+        client.open('GET', '/skills.txt');
+        const classCntx = this;
+        client.onreadystatechange = function () {
+            if (client.responseText != '') {
+                const skillsAr = client.responseText.split("\r\n");
+                let splitted = splitParts(skillsAr, maxWords);
+                classCntx.skills = splitted;
+            }
+        }
+        client.send();
+
     }
 
     sortTasks(type) {
@@ -72,9 +97,7 @@ export default class SkillsViewer extends Component {
 
         return (
 
-            <div>
-                <header>sdf</header>
-
+            <>
                 <div className='content'>
                     <section className='task_list'>
                         {this.state.tasks.map((t, i) => <>
@@ -90,9 +113,17 @@ export default class SkillsViewer extends Component {
                     </section>
 
                     <section className='control'>
+                        <div className='skills_cloud'>
+                            <div className='skills_cloud_title'>
+                                <img src='./parts_imgs/folder.png' className='folder_img'></img>
+                                skills</div>
+                            {this.skills
+                                .map((t, i) => <WordsCloud skills={t} />)}
+                        </div>
+
                     </section>
                 </div>
-            </div>
+            </>
         )
     }
 }
