@@ -1,0 +1,17 @@
+.resume_list {
+    display: flex;
+    position: absolute;
+    right: 20%;
+
+    .resume_item {
+        width: 25px;
+        height: 20px;
+        text-align: center;
+        color: white;
+        font-family: fantasy;
+        border: solid black;
+        border-width: 1px;
+        cursor: pointer;
+        text-decoration:none;
+    }
+}
