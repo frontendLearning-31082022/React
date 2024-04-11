@@ -6,9 +6,11 @@
   border-right: 1px solid rgb(40, 40, 40);
 }
 
+$width-thin-panel: 5%;
+
 .App {
   display: grid;
-  grid-template-columns: 5% 90% 5%;
+  grid-template-columns: $width-thin-panel 90% $width-thin-panel;
 
   header {
     grid-column: 1 / 4;
@@ -40,6 +42,25 @@ body {
   @include panel;
 }
 
+
+@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
+header {
+  .header_title {
+    margin-left: $width-thin-panel+3;
+    font-size: xx-large;
+    font-family: "Rock Salt", cursive;
+    font-weight: 400;
+    font-style: normal;
+    color: white;
+  }
+
+  .resume_list {
+    position: absolute;
+    top: 0%;
+    right: 20%;
+  }
+}
+
 .control {
   width: 30%;
   height: 100vh;
@@ -59,5 +80,41 @@ body {
 
   .task {
     margin: 2% 2% 2% 2%;
+
+    .subject {
+      cursor: pointer;
+    }
+  }
+
+  .task_list_filter {
+    span.filter_choosed {
+      font-family: cursive;
+      font-weight: 900;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .filter_disable {
+      background: #830d3d;
+      border: none;
+      margin: 20px 20px 20px 20px;
+    }
+  }
+}
+
+.keywords_carousel {
+  li {
+    background: #3c4759;
+    color: #dadada;
+
+    padding: 10px 20px;
+    border-radius: 7px;
+    box-shadow:
+      2px 2px 2px #111822ab,
+      2px 3px 3px #111822ab,
+      2px 5px 5px #111822ab,
+      2px 8px 8px #111822ab;
+
+    cursor: pointer;
   }
 }

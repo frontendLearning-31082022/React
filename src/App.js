@@ -9,6 +9,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <div className='header_title'>Summary of Experience</div>
         <Resume /> <ResumeGit />
       </header>
       <SkillsViewer></SkillsViewer>

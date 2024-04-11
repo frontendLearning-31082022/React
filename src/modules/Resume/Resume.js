@@ -10,12 +10,10 @@ const sites = [
 
 export default function Resume() {
     return (
-        <div>
-            <div className='resume_list'>
+        <div className='resume_list'> 
                 {sites.map((t, i) =>
                     <a key={i} style={{ background: "#" + t.back }} className='resume_item'
                         title={t.name} href={t.href} >{t.logo}</a>)}
-            </div>
         </div>
     )
 }
