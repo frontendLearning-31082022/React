@@ -13,11 +13,15 @@ const maxWords = 20;
 export default class SkillsViewer extends Component {
     constructor(props) {
         super(props);
-        this.state = { titles: [], tasks: [] }
+        this.state = { titles: [], tasks: [], filterWords: new Set() }
+
+        this.tasks_all = [];
         this.skills = [];
+        this.tags = [];
 
         this.loadData = this.loadData.bind(this);
         this.sortTasks = this.sortTasks.bind(this);
+        this.filterTasks = this.filterTasks.bind(this);
     }
 
     async loadData() {
@@ -51,6 +55,7 @@ export default class SkillsViewer extends Component {
                     if (task['Ссылка git'] != '') tasks.push(task);
                 });
                 const promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
+                this.tasks_all = [...tasks];
                 await promisedSetState({ tasks: tasks });
             })
             .catch(function (err) {
@@ -77,6 +82,11 @@ export default class SkillsViewer extends Component {
         }
         client.send();
 
+        let tags = new Set();
+        this.state.tasks.forEach(x => {
+            x.hashtag.split(',').forEach(x => tags.add(x.trim()));
+        });
+        this.tags = [...tags].filter(x => x.length > 0);
     }
 
     sortTasks(type) {
@@ -87,6 +97,30 @@ export default class SkillsViewer extends Component {
         this.setState({ tasks: sorted });
     }
 
+    filterTasks(word, del = false) {
+        this.state.filterWords.add(word);
+        if (del) this.state.filterWords.delete(word);
+
+        const resetFilter = () => {
+            this.setState({ filterWords: new Set() });
+            this.setState({ tasks: this.tasks_all });
+            this.setState({ tasks: this.tasks_all }, () => {
+                this.sortTasks('relevance');
+            });
+        }
+        if (word === null) { resetFilter(); return; }
+        if (this.state.filterWords.size === 0) { resetFilter(); return; }
+
+        this.setState({ filterWords: this.state.filterWords });
+
+        const filtered = this.tasks_all.filter(x => {
+            const tagsOnTask = x.hashtag.split(',').map(p => p.trim());
+            const hasChoosedTags = tagsOnTask.some(r => [...this.state.filterWords].includes(r))
+            return hasChoosedTags;
+        });
+        this.setState({ tasks: filtered });
+    }
+
     componentDidMount() {
         this.loadData().then(x => {
             this.sortTasks(sortType.relevance);
@@ -95,18 +129,24 @@ export default class SkillsViewer extends Component {
 
 
     render() {
-
         return (
 
             <>
                 <div className='content'>
                     <section className='task_list'>
+                        <div className='task_list_filter'>
+                            {this.state.filterWords.size > 0 ? <button className='filter_disable' title='Сбросить фильтрацию'
+                                onClick={() => { this.filterTasks(null) }}>X</button> : ''}
+                            {this.state.filterWords.size > 0 ? 'Отфильтровано по: ' : ''}
+                            {[...this.state.filterWords].map((t, i) =>
+                                <span className='filter_choosed' onClick={() => { this.filterTasks(t, true) }} href="#">#{t}</span>)}
+                        </div>
                         {this.state.tasks.map((t, i) => <>
                             <div className='task' key={i + 'task'}>
                                 <div className='container_subject_logo'>
                                     <img src={`./subjs_imgs/${t['logo']}.png`} className='task_subject_logo'></img>
                                 </div>
-                                <span className='subject' key={i + 'sub'}>{t['Название предмета']}</span>
+                                <span className='subject' key={i + 'sub'} onClick={() => { this.filterTasks(t['Название предмета']) }} >{t['Название предмета']}</span>
                                 <a className='subject_solve' key={i + 'sub_solve'} href={t['Ссылка git']}>Реализация</a>
                                 <div className="task_descp" dangerouslySetInnerHTML={{ __html: t['Условие задачи'] }} key={i + 'task_descp'} ></div>
                             </div>
@@ -118,7 +158,8 @@ export default class SkillsViewer extends Component {
                             <div className='skills_cloud_title'>
                                 <img src='./parts_imgs/folder.png' className='folder_img'></img>
                                 keywords</div>
-                            <WordCarousel words={''} />
+                            <WordCarousel words={this.tags}
+                                onClickElement={(e) => { this.filterTasks(e.target.textContent) }} />
                         </div>
 
                         <div className='skills_cloud'>
