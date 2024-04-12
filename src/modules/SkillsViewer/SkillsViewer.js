@@ -139,19 +139,21 @@ export default class SkillsViewer extends Component {
                     <section className='task_list'>
                         <div className='task_list_filter'>
                             {this.state.filterWords.size > 0 ? <button className='filter_disable' title='Сбросить фильтрацию'
-                                onClick={() => { this.filterTasks(null) }}>X</button> : ''}
+                                         onClick={() => { this.filterTasks(null) }}>X</button> : ''}
                             {this.state.filterWords.size > 0 ? 'Отфильтровано по: ' : ''}
                             {[...this.state.filterWords].map((t, i) =>
                                 <span className='filter_choosed' onClick={() => { this.filterTasks(t, true) }} href="#">#{t}</span>)}
                         </div>
+
                         {this.state.tasks.map((t, i) => <>
                             <div className='task' key={i + 'task'}>
-                                <div className='container_subject_logo'>
-                                    <img src={`./subjs_imgs/${t['logo']}.png`} className='task_subject_logo'></img>
+                                <div className='task_content'>
+                                    <div className='container_subject_logo'>
+                                        <img src={`./subjs_imgs/${t['logo']}.png`} className='task_subject_logo'></img>
+                                    </div>
+                                    <span className='subject' key={i + 'sub'} onClick={() => { this.filterTasks(t['Название предмета']) }} >{t['Название предмета']}</span>
+                                    <div className="task_descp" dangerouslySetInnerHTML={{ __html: t['Условие задачи'] }} key={i + 'task_descp'} ></div>
                                 </div>
-                                <span className='subject' key={i + 'sub'} onClick={() => { this.filterTasks(t['Название предмета']) }} >{t['Название предмета']}</span>
-                                <a className='subject_solve' key={i + 'sub_solve'} href={t['Ссылка git']}>Реализация</a>
-                                <div className="task_descp" dangerouslySetInnerHTML={{ __html: t['Условие задачи'] }} key={i + 'task_descp'} ></div>
                                 <a className={'subject_solve' + (i === 1 && this.state.blink_once ?
                                     ' blink_once' : '')} key={i + 'sub_solve'} href={t['Ссылка git']}>Реализация</a>
                             </div>
@@ -160,10 +162,14 @@ export default class SkillsViewer extends Component {
 
                     <section className='control'>
                         <div className='keywords_carousel'>
-                            <div className='skills_cloud_title'>
-                                <img src='./parts_imgs/folder.png' className='folder_img'></img>
-                                keywords</div>
+                            <div className='keywords_carousel_title_container'>
                                 <div className='keywords_all' onClick={() => this.openModalWindow()}>все</div>
+                                <div className='skills_cloud_title'>
+                                    <img src='./parts_imgs/folder.png' className='folder_img'></img>
+                                    keywords
+                                </div>
+                            </div>
+
                             <WindowsModal showFn={(fn) => this.openModalWindow = fn} className='window_modal_keywords'>
                                 <div className='window_modal_title'>Список всех ключевых слов для фильтрации</div>
                                 <div className='keywords_list'>

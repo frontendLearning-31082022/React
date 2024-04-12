@@ -5,6 +5,7 @@
   border-left: 1px solid rgb(85, 85, 85);
   border-right: 1px solid rgb(40, 40, 40);
 }
+
 @mixin hashtag {
   font-family: cursive;
   font-weight: 900;
@@ -108,21 +109,24 @@ header {
 
   .task_list_filter {
     span.filter_choosed {
-      font-family: cursive;
-      font-weight: 900;
-      margin-left: 10px;
-      cursor: pointer;
+      @include hashtag;
     }
 
     .filter_disable {
       background: #830d3d;
       border: none;
+      cursor: pointer;
       margin: 20px 20px 20px 20px;
     }
   }
 }
 
 .keywords_carousel {
+  .keywords_carousel_title_container {
+    display: flex;
+    justify-content: space-between;
+  }
+
   li {
     background: #3c4759;
     color: #dadada;

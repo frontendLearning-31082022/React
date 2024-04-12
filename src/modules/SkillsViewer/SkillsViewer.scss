@@ -12,6 +12,7 @@ header {
 
     .task {
         word-wrap: break-word;
+        display: flex;
 
         .subject_solve {
             margin-left: auto;
@@ -21,6 +22,7 @@ header {
         .container_subject_logo {
             width: 70px;
             height: auto;
+
             .task_subject_logo {
                 width: inherit;
                 height: inherit;
