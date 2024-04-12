@@ -14,7 +14,7 @@ const maxWords = 20;
 export default class SkillsViewer extends Component {
     constructor(props) {
         super(props);
-        this.state = { titles: [], tasks: [], filterWords: new Set() }
+        this.state = { titles: [], tasks: [], filterWords: new Set(), blink_once: true }
 
         this.tasks_all = [];
         this.skills = [];
@@ -123,11 +123,13 @@ export default class SkillsViewer extends Component {
     }
 
     componentDidMount() {
+        const ctx = this;
         this.loadData().then(x => {
             this.sortTasks(sortType.relevance);
-        })
-    }
+        });
 
+        setTimeout(() => { ctx.setState({ blink_once: false }); }, 10000);
+    }
 
     render() {
         return (
@@ -150,6 +152,8 @@ export default class SkillsViewer extends Component {
                                 <span className='subject' key={i + 'sub'} onClick={() => { this.filterTasks(t['Название предмета']) }} >{t['Название предмета']}</span>
                                 <a className='subject_solve' key={i + 'sub_solve'} href={t['Ссылка git']}>Реализация</a>
                                 <div className="task_descp" dangerouslySetInnerHTML={{ __html: t['Условие задачи'] }} key={i + 'task_descp'} ></div>
+                                <a className={'subject_solve' + (i === 1 && this.state.blink_once ?
+                                    ' blink_once' : '')} key={i + 'sub_solve'} href={t['Ссылка git']}>Реализация</a>
                             </div>
                             <br /><br /></>)}
                     </section>

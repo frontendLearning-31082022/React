@@ -98,6 +98,12 @@ header {
     .subject {
       cursor: pointer;
     }
+
+    .subject_solve {
+      writing-mode: vertical-lr;
+      text-orientation: upright;
+      text-decoration: none;
+    }
   }
 
   .task_list_filter {

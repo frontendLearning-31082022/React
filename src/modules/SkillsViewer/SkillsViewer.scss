@@ -13,6 +13,11 @@ header {
     .task {
         word-wrap: break-word;
 
+        .subject_solve {
+            margin-left: auto;
+            color: #424242;
+        }
+
         .container_subject_logo {
             width: 70px;
             height: auto;
@@ -23,5 +28,20 @@ header {
                 margin: 0px 18px 10px 0px;
             }
         }
+    }
+}
+
+
+.blink_once {
+    background: 50% 100% / 80% 0% no-repeat radial-gradient(ellipse at left, #fff, transparent, transparent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    animation: fadein 3s cubic-bezier(1, 0.1, 0.95, 0.35) alternate infinite  1s;
+}
+
+@keyframes fadein {
+    100% {
+        background-size: 800% 800%;
     }
 }
