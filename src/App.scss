@@ -5,6 +5,12 @@
   border-left: 1px solid rgb(85, 85, 85);
   border-right: 1px solid rgb(40, 40, 40);
 }
+@mixin hashtag {
+  font-family: cursive;
+  font-weight: 900;
+  margin-left: 10px;
+  cursor: pointer;
+}
 
 $width-thin-panel: 5%;
 
@@ -44,6 +50,7 @@ body {
 
 
 @import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
+
 header {
   .header_title {
     margin-left: $width-thin-panel+3;
@@ -64,6 +71,13 @@ header {
 .control {
   width: 30%;
   height: 100vh;
+
+  .keywords_all {
+    margin: 20px 20px 0px 4%;
+    color: rgb(187, 187, 187);
+    font-weight: bold;
+    cursor: pointer;
+  }
 
   .skills_cloud_title {
     font-weight: bold;
@@ -116,5 +130,39 @@ header {
       2px 8px 8px #111822ab;
 
     cursor: pointer;
+  }
+}
+
+.window_modal {
+  &_title {
+    margin: 2% 5% 2% 2%;
+    font-size: xx-large;
+  }
+
+  &_keywords {
+    border: solid;
+    background-color: #933132;
+    color: white;
+
+    .keywords_list {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 5% 5% 2% 2%;
+      padding-bottom: 10%;
+
+      .keyword {
+        height: fit-content;
+        @include hashtag;
+      }
+    }
+  }
+
+  button {
+    background: #580000;
+    color: white;
+    border: none;
   }
 }

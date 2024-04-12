@@ -4,6 +4,7 @@ import './SkillsViewer.scss';
 
 import WordsCloud from '../../canvas/words_cloud/WordsCloud';
 import WordCarousel from '../../canvas/word_carousel/WordCarousel';
+import WindowsModal from '../WindowModal/WindowsModal';
 
 const sortType = {
     relevance: 'relevance'
@@ -158,6 +159,15 @@ export default class SkillsViewer extends Component {
                             <div className='skills_cloud_title'>
                                 <img src='./parts_imgs/folder.png' className='folder_img'></img>
                                 keywords</div>
+                                <div className='keywords_all' onClick={() => this.openModalWindow()}>все</div>
+                            <WindowsModal showFn={(fn) => this.openModalWindow = fn} className='window_modal_keywords'>
+                                <div className='window_modal_title'>Список всех ключевых слов для фильтрации</div>
+                                <div className='keywords_list'>
+                                    {this.tags.map((t, i) =>
+                                        <div className='keyword'
+                                            onClick={(e) => { this.filterTasks(e.target.textContent) }}>{t}</div>)}
+                                </div>
+                            </WindowsModal>
                             <WordCarousel words={this.tags}
                                 onClickElement={(e) => { this.filterTasks(e.target.textContent) }} />
                         </div>
