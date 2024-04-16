@@ -115,18 +115,11 @@ export default function WordsCloud(props) {
     }, [timer]);
 
     return (
-        <>
-            <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600&subset=latin,latin-ext' rel='stylesheet'
-                type='text/css'></link>
-
+        <><link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600&subset=latin,latin-ext'
+            rel='stylesheet' type='text/css'></link>
             <svg id="tagi" x="0px" y="0px" viewBox="0 0 920 324">
-                <> {props.skills
-                    .map((t, i) => <>
-                        <text transform={style.transform[i]}
-                            {...(i === 2 ? { id: 'XMLID_2_' } : {})}
-                            className={classes[i]}>{t}</text>
-                    </>)}</>
-            </svg>
-        </>
+                {props.skills.map((t, i) => <>
+                    <text transform={style.transform[i]} className={classes[i]} key={i}>{t}</text></>)
+                } </svg></>
     )
 }
