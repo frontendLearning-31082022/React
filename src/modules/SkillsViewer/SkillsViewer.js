@@ -72,17 +72,20 @@ export default class SkillsViewer extends Component {
             }
             return res;
         }
-        const client = new XMLHttpRequest();
-        client.open('GET', '/skills.txt');
-        const classCntx = this;
-        client.onreadystatechange = function () {
-            if (client.responseText != '') {
-                const skillsAr = client.responseText.split("\r\n");
+
+        await fetch(window.location.origin + '/skills.txt')
+            .then((response) => {
+                return response.text();
+            })
+            .then(function (x) {
+                const skillsAr = x.split("\n");
                 let splitted = splitParts(skillsAr, maxWords);
-                classCntx.skills = splitted;
-            }
-        }
-        client.send();
+                rCntxt.skills = splitted;
+                rCntxt.forceUpdate();
+            })
+            .catch(function (err) {
+                console.log('Failed to fetch page: ', err);
+            });
 
         let tags = new Set();
         this.state.tasks.forEach(x => {
@@ -140,7 +143,7 @@ export default class SkillsViewer extends Component {
                     <section className='task_list'>
                         <div className='task_list_filter'>
                             {this.state.filterWords.size > 0 ? <button className='filter_disable' title='Сбросить фильтрацию'
-                                         onClick={() => { this.filterTasks(null) }}>X</button> : ''}
+                                onClick={() => { this.filterTasks(null) }}>X</button> : ''}
                             {this.state.filterWords.size > 0 ? 'Отфильтровано по: ' : ''}
                             {[...this.state.filterWords].map((t, i) =>
                                 <span className='filter_choosed' onClick={() => { this.filterTasks(t, true) }} href="#">#{t}</span>)}
