@@ -27,37 +27,38 @@ export default class SkillsViewer extends Component {
 
     async loadData() {
         const rCntxt = this;
+        const loadTasks = (html) => {
+            const parser = new DOMParser();
+            const domData = parser.parseFromString(html, "text/html");
+
+            let rows = [...domData.getElementsByTagName('tr')];
+            const format_text = (t) => { return t.replaceAll('\n', ' ').replaceAll(/\s\s+/g, ' '); }
+            const titles = [...rows[0].children].map(x => format_text(x.textContent));
+            rCntxt.setState({ titles: titles });
+
+            rows.splice(0, 1);
+
+            const tasks = [];
+            [...rows].forEach(x => {
+                const task = {};
+                titles.forEach((title, i) => {
+                    if (!title) return;
+                    task[title] = x.children[i].textContent;
+                    if (title === 'Условие задачи') task[title] = x.children[i].outerHTML;
+                });
+                if (task['Ссылка git'] != '') tasks.push(task);
+            });
+            const promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
+            this.tasks_all = [...tasks];
+            return promisedSetState({ tasks: tasks });
+        }
 
         await fetch(window.location.origin + '/data.html')
             .then((response) => {
-                return response.arrayBuffer();
+                return response.text();
             })
-            .then(async (textHtml) => {
-                let html = new TextDecoder('windows-1251').decode(textHtml);
-
-                const parser = new DOMParser();
-                const domData = parser.parseFromString(html, "text/html");
-
-                let rows = [...domData.getElementsByTagName('tr')];
-                const format_text = (t) => { return t.replaceAll('\n', ' ').replaceAll(/\s\s+/g, ' '); }
-                const titles = [...rows[0].children].map(x => format_text(x.textContent));
-                rCntxt.setState({ titles: titles });
-
-                rows.splice(0, 1);
-
-                const tasks = [];
-                [...rows].forEach(x => {
-                    const task = {};
-                    titles.forEach((title, i) => {
-                        if (!title) return;
-                        task[title] = x.children[i].textContent;
-                        if (title === 'Условие задачи') task[title] = x.children[i].outerHTML;
-                    });
-                    if (task['Ссылка git'] != '') tasks.push(task);
-                });
-                const promisedSetState = (newState) => new Promise(resolve => this.setState(newState, resolve));
-                this.tasks_all = [...tasks];
-                await promisedSetState({ tasks: tasks });
+            .then(async function (x) {
+                await loadTasks(x);
             })
             .catch(function (err) {
                 console.log('Failed to fetch page: ', err);
