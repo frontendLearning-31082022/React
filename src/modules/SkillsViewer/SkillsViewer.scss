@@ -29,6 +29,17 @@ header {
                 margin: 0px 18px 10px 0px;
             }
         }
+
+        &_tags {
+            display: flex;
+            justify-content: end;
+        }
+        &_tag {
+            margin-left: 10px;
+            font-family: monospace;
+            color: #4b664b;
+            cursor: pointer;
+        }
     }
 }
 
@@ -38,7 +49,7 @@ header {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent !important;
-    animation: fadein 3s cubic-bezier(1, 0.1, 0.95, 0.35) alternate infinite  1s;
+    animation: fadein 3s cubic-bezier(1, 0.1, 0.95, 0.35) alternate infinite 1s;
 }
 
 @keyframes fadein {

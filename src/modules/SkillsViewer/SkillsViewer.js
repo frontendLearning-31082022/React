@@ -136,6 +136,8 @@ export default class SkillsViewer extends Component {
     }
 
     render() {
+        const filterClickWord = (e) => { this.filterTasks(e.target.textContent) };
+
         return (
 
             <>
@@ -157,6 +159,9 @@ export default class SkillsViewer extends Component {
                                     </div>
                                     <span className='subject' key={i + 'sub'} onClick={() => { this.filterTasks(t['Название предмета']) }} >{t['Название предмета']}</span>
                                     <div className="task_descp" dangerouslySetInnerHTML={{ __html: t['Условие задачи'] }} key={i + 'task_descp'} ></div>
+                                    <div className='task_tags'> {t['hashtag'].split(',').map((h, hi) =>
+                                        <span className='task_tag' onClick={filterClickWord} >#<span>{h.trim()}</span></span>
+                                    )}</div>
                                 </div>
                                 <a className={'subject_solve' + (i === 1 && this.state.blink_once ?
                                     ' blink_once' : '')} key={i + 'sub_solve'} href={t['Ссылка git']}>Реализация</a>
@@ -179,11 +184,11 @@ export default class SkillsViewer extends Component {
                                 <div className='keywords_list'>
                                     {this.tags.map((t, i) =>
                                         <div className='keyword'
-                                            onClick={(e) => { this.filterTasks(e.target.textContent) }}>{t}</div>)}
+                                            onClick={filterClickWord}>{t}</div>)}
                                 </div>
                             </WindowsModal>
                             <WordCarousel words={this.tags}
-                                onClickElement={(e) => { this.filterTasks(e.target.textContent) }} />
+                                onClickElement={filterClickWord} />
                         </div>
 
                         <div className='skills_cloud'>
