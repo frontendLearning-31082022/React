@@ -1,0 +1,240 @@
+@mixin panel {
+  background-color: rgb(60, 63, 65);
+  border-top: 1px solid rgb(85, 85, 85);
+  border-bottom: 1px solid rgb(40, 40, 40);
+  border-left: 1px solid rgb(85, 85, 85);
+  border-right: 1px solid rgb(40, 40, 40);
+}
+
+@mixin hashtag {
+  font-family: cursive;
+  font-weight: 900;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+$width-thin-panel: 5%;
+
+.App {
+  display: grid;
+  grid-template-columns: $width-thin-panel 90% $width-thin-panel;
+
+  header {
+    grid-column: 1 / 4;
+    order: 0;
+  }
+
+  .content {
+    order: 2;
+  }
+}
+
+.App::before {
+  content: "";
+  display: inline-block;
+  order: 1;
+}
+
+.App::after {
+  content: "";
+  display: inline-block;
+  order: 4;
+}
+
+header,
+.control,
+.App::after,
+.App::before,
+body {
+  @include panel;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
+
+header {
+  height: 100px;
+
+  .header_title {
+    margin-left: $width-thin-panel+3;
+    font-size: xx-large;
+    font-family: "Rock Salt", cursive;
+    font-weight: 400;
+    font-style: normal;
+    color: white;
+  }
+
+  .resume_list {
+    position: absolute;
+    top: 0%;
+    right: 20%;
+  }
+
+  .git_link {
+    position: absolute;
+    right: 1%;
+    top: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: end
+  }
+}
+
+.control {
+  width: 30%;
+  height: 100vh;
+
+  .keywords_all {
+    margin: 20px 20px 0px 4%;
+    color: rgb(187, 187, 187);
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .skills_cloud_title {
+    font-weight: bold;
+    color: rgb(187, 187, 187);
+    display: flex;
+    justify-content: end;
+    margin: 20px 20px 0px 0px;
+  }
+}
+
+.task_list {
+  color: rgb(187, 187, 187);
+  background-color: #2b2b2b;
+
+  .task {
+    margin: 2% 2% 2% 2%;
+
+    .subject {
+      cursor: pointer;
+    }
+
+    .subject_solve {
+      writing-mode: vertical-lr;
+      text-orientation: upright;
+      text-decoration: none;
+    }
+  }
+
+  .task_list_filter {
+    span.filter_choosed {
+      @include hashtag;
+    }
+
+    .filter_disable {
+      background: #830d3d;
+      border: none;
+      cursor: pointer;
+      margin: 20px 20px 20px 20px;
+    }
+  }
+}
+
+.keywords_carousel {
+  .keywords_carousel_title_container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  li {
+    background: #3c4759;
+    color: #dadada;
+
+    padding: 10px 20px;
+    border-radius: 7px;
+    box-shadow:
+      2px 2px 2px #111822ab,
+      2px 3px 3px #111822ab,
+      2px 5px 5px #111822ab,
+      2px 8px 8px #111822ab;
+
+    cursor: pointer;
+  }
+}
+
+.window_modal {
+  &_title {
+    margin: 2% 5% 2% 2%;
+    font-size: xx-large;
+  }
+
+  &_keywords {
+    border: solid;
+    background-color: #933132;
+    color: white;
+
+    .keywords_list {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 5% 5% 2% 2%;
+      padding-bottom: 10%;
+
+      .keyword {
+        height: fit-content;
+        @include hashtag;
+      }
+    }
+  }
+
+  button {
+    background: #580000;
+    color: white;
+    border: none;
+  }
+}
+
+@media (max-width: 900px) {
+
+  .App {
+    grid-template-columns: 2% 96% 2%;
+  }
+
+  header {
+    height: fit-content;
+    display: grid;
+    grid-template-columns: 68% 32%;
+
+    &>* {
+      position: initial !important;
+      top: unset;
+      right: unset;
+    }
+
+    .header_title {
+      text-align: center;
+      grid-column: 1/4;
+    }
+
+    .resume_list {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      padding-left: 40px;
+
+      .resume_item {
+        scale: 1.5;
+      }
+    }
+  }
+
+  .content {
+    display: grid !important;
+    grid-template-columns: 100%;
+
+    .task_list {
+      width: inherit;
+      order: 1;
+    }
+    
+    .control {
+      width: 100%;
+      height: fit-content;
+    }
+  }
+
+}
