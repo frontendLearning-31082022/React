@@ -1,0 +1,35 @@
+.finder_header {
+    width: 100%;
+    height: 40px;
+    display: flex;
+
+    input {
+        width: 70%;
+        height: inherit;
+    }
+
+    button {
+        width: 14%;
+        height: inherit;
+    }
+}
+
+.cell {
+    background: #a36565;
+    border: solid;
+
+    .obj_store {
+        background: #ddcb25;
+        border: solid;
+    }
+}
+
+.empty_space {
+    background: #584e4e;
+    border: solid;
+}
+
+.row {
+    display: flex;
+}
+
