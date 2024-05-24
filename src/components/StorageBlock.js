@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import "../css/storageblock.scss"
 import InputObject from '../forms/InputObject';
 
+import DragByMouse from '../js_modules/drag_by_mouse';
+
 export default class StorageBlock extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +25,8 @@ export default class StorageBlock extends Component {
     this.switchWindow = this.switchWindow.bind(this);
     this.getAll = this.getAll.bind(this);
     this.temp = this.temp.bind(this);
+    this.saveXYZstoredObjs = this.saveXYZstoredObjs.bind(this);
+    this.modifyObjs = this.modifyObjs.bind(this);
 
     this.ip = 'http://192.168.1.45:8080/'
   }
@@ -33,25 +37,40 @@ export default class StorageBlock extends Component {
     }));
   }
 
-  getAll() {
-    const url = this.ip + 'storage_block/getall';
-    fetch(url).then(x => x.json()).then(x => {
-      this.setState({ storedObjs: x });
+  onLoadStoredObjs(x) {
+    this.getAll().then(x => {
+      // this.setState({ storedObjs: x });
       this.setState({ storedObjs: x },
         () => {
-          [...document.getElementsByClassName('obj_store')].forEach(el => {
+          [...document.getElementsByClassName('obj_store')].forEach((el, i) => {
             this.scaleFN(el);
+            // debugger;
+            // el.style.top = (el.offsetTop + y) + "px";
+            // el.style.left = (el.offsetLeft + x) + "px";
+            // this.upFN({ y: (el.offsetTop + y), x: (el.offsetLeft + x) });
+
+            const ctx = this;
+            const updFN = (val) => {
+              const cur = ctx.state.storedObjs;
+              cur[i].x = val.x;
+              cur[i].y = val.y;
+              ctx.setState({ storedObjs: cur });
+            };
+
+            new DragByMouse(el, updFN);
           });
         });
-    });
+    })
+  }
 
-
-
-
+  async getAll() {
+    const url = this.ip + 'storage_block/getall';
+    const resp = await fetch(url);
+    const json = await resp.json();
+    return json;
   }
 
   addObject() {
-
     const addFn = (fields) => {
 
       // String json=[...fields]
@@ -69,10 +88,38 @@ export default class StorageBlock extends Component {
       });
     };
     this.setState({ sumbit_add: addFn });
-
-
-
     this.switchWindow();
+  }
+  async modifyObjs(objs) {
+    const postModify = async (obj) => {
+      const url = this.ip + 'storage_block/modifyItem';
+
+      const resp = await fetch(url, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(obj)
+      });
+      return resp.ok;
+    };
+
+    for (let index = 0; index < objs.length; index++) {
+      const ok = await postModify(objs[index]);
+      if (!ok) return false;
+    }
+
+  }
+
+  saveXYZstoredObjs() {
+    this.getAll().then(x => {
+
+      let modified = this.state.storedObjs;
+      modified = modified.filter((y, i) => JSON.stringify(x[0]) !== JSON.stringify(y));
+
+      this.modifyObjs(modified).then(res => {
+        if (!res) alert("Ошибка сохранения координат");
+        if (res) alert("Координаты сохранены");
+      });
+    });
   }
 
 
@@ -88,27 +135,33 @@ export default class StorageBlock extends Component {
 
     });
 
-    this.getAll();
-
+    this.onLoadStoredObjs();
 
   }
 
 
   temp() {
-    // debugger;
+    //   // debugger;
 
 
-    let div = 'bottom2cells';
-    return this.state.storedObjs.filter(x => x['cell_name'] == div).map((t, i) => {
-      return <div className='obj_store' {...t}>{t.name}</div>
-    }
-    );
+    //   let div = 'bottom2cells';
+    //   return this.state.storedObjs.filter(x => x['cell_name'] == div).map((t, i) => {
+    //     return <div className='obj_store' {...t}>{t.name}</div>
+    //   }
+    //   );
   }
 
   // w={t.w} h={t.h} d={t.d} x={t.x} y={t.y} z={t.z}
   // <div key={i}>{t.name}</div>
   render() {
 
+    const objs_rend = () => {
+      let div = 'bottom2cells';
+      return this.state.storedObjs.filter(x => x['cell_name'] == div).map((t, i) => {
+        return <div className='obj_store' {...t}  style={{left:t.x+"px",top:t.y+"px"}}>{t.name}</div>
+      }
+      );
+    }
     // const rendObjs = (ctxt) => {
     //     debugger;
     //  };
@@ -124,11 +177,10 @@ export default class StorageBlock extends Component {
           <input type="text"></input>
           <button className='find'>Найти</button>
           <button className='add_box' onClick={this.addObject}>Добавить</button>
-
-
         </div>
         <div className='header_info'>
           <div className='current_cell'>Текущая ячейка - {this.state.current_cell}</div>
+          <button onClick={this.saveXYZstoredObjs}>Сохранить XYZ</button>
         </div>
 
         <div className='cells_data'>
@@ -159,7 +211,7 @@ export default class StorageBlock extends Component {
               <div className='cell' w="86" h="45" d="56" cellName="bottom2cells">
 
                 {
-                  this.temp()
+                  objs_rend()
                 }
 
               </div>

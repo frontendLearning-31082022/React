@@ -17,10 +17,12 @@
 .cell {
     background: #a36565;
     border: solid;
+    position: relative;
 
     .obj_store {
         background: #ddcb25;
         border: solid;
+        position: absolute;
     }
 }
 
@@ -32,4 +34,3 @@
 .row {
     display: flex;
 }
-
