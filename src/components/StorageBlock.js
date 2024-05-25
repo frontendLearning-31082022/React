@@ -11,7 +11,7 @@ export default class StorageBlock extends Component {
 
     this.state = {
       add_show: false, sumbit_add: () => { }, current_cell: "",
-      storedObjs: []
+      boxes: []
     };
 
     this.scale = 5;
@@ -22,11 +22,10 @@ export default class StorageBlock extends Component {
       el.style.height = height + "px";
     }
 
-    this.addObject = this.addObject.bind(this);
+    this.addBox = this.addBox.bind(this);
     this.switchWindow = this.switchWindow.bind(this);
     this.getAll = this.getAll.bind(this);
-    this.temp = this.temp.bind(this);
-    this.saveXYZstoredObjs = this.saveXYZstoredObjs.bind(this);
+    this.saveXYZboxes = this.saveXYZboxes.bind(this);
     this.modifyObjs = this.modifyObjs.bind(this);
 
     this.ip = 'http://192.168.1.45:8080/'
@@ -38,10 +37,9 @@ export default class StorageBlock extends Component {
     }));
   }
 
-  onLoadStoredObjs(x) {
+  onLoadBoxes(x) {
     this.getAll().then(x => {
-      // this.setState({ storedObjs: x });
-      this.setState({ storedObjs: x },
+      this.setState({ boxes: x },
         () => {
           [...document.getElementsByClassName('obj_store')].forEach((el, i) => {
             this.scaleFN(el);
@@ -52,10 +50,10 @@ export default class StorageBlock extends Component {
 
             const ctx = this;
             const updFN = (val) => {
-              const cur = ctx.state.storedObjs;
+              const cur = ctx.state.boxes;
               cur[i].x = val.x;
               cur[i].y = val.y;
-              ctx.setState({ storedObjs: cur });
+              ctx.setState({ boxes: cur });
             };
 
             new DragByMouse(el, updFN);
@@ -65,17 +63,17 @@ export default class StorageBlock extends Component {
   }
 
   async getAll() {
-    const url = this.ip + 'storage_block/getall';
+    const url = this.ip + 'storage_block/boxes/getall';
     const resp = await fetch(url);
     const json = await resp.json();
     return json;
   }
 
-  addObject() {
+  addBox() {
     const addFn = (fields) => {
 
       // String json=[...fields]
-      const url = this.ip + 'storage_block/add_item';
+      const url = this.ip + 'storage_block/boxes/add_item';
 
 
       fetch(url, {
@@ -93,7 +91,7 @@ export default class StorageBlock extends Component {
   }
   async modifyObjs(objs) {
     const postModify = async (obj) => {
-      const url = this.ip + 'storage_block/modifyItem';
+      const url = this.ip + 'storage_block/boxes/modifyItem';
 
       const resp = await fetch(url, {
         method: "POST",
@@ -110,10 +108,10 @@ export default class StorageBlock extends Component {
 
   }
 
-  saveXYZstoredObjs() {
+  saveXYZboxes() {
     this.getAll().then(x => {
 
-      let modified = this.state.storedObjs;
+      let modified = this.state.boxes;
       modified = modified.filter((y, i) => JSON.stringify(x[0]) !== JSON.stringify(y));
 
       this.modifyObjs(modified).then(res => {
@@ -136,20 +134,8 @@ export default class StorageBlock extends Component {
 
     });
 
-    this.onLoadStoredObjs();
+    this.onLoadBoxes();
 
-  }
-
-
-  temp() {
-    //   // debugger;
-
-
-    //   let div = 'bottom2cells';
-    //   return this.state.storedObjs.filter(x => x['cell_name'] == div).map((t, i) => {
-    //     return <div className='obj_store' {...t}>{t.name}</div>
-    //   }
-    //   );
   }
 
   // w={t.w} h={t.h} d={t.d} x={t.x} y={t.y} z={t.z}
@@ -158,7 +144,7 @@ export default class StorageBlock extends Component {
 
     const objs_rend = () => {
       let div = 'bottom2cells';
-      return this.state.storedObjs.filter(x => x['cell_name'] == div).map((t, i) => {
+      return this.state.boxes.filter(x => x['cell_name'] == div).map((t, i) => {
         return <div className='obj_store' {...t} style={{ left: t.x + "px", top: t.y + "px" }}>{t.name}</div>
       }
       );
@@ -172,8 +158,8 @@ export default class StorageBlock extends Component {
       if (!cellName) return "";
 
       const rend = <div className='contextmenu_btns'>
-        <button onClick={this.addObject}>Добавить box в {cellName}</button>
-        <button onClick={this.saveXYZstoredObjs}>Сохранить XYZ в {cellName}</button>
+        <button onClick={this.addBox}>Добавить box в {cellName}</button>
+        <button onClick={this.saveXYZboxes}>Сохранить XYZ в {cellName}</button>
       </div>;
       return rend;
     }
