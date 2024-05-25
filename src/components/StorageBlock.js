@@ -3,6 +3,7 @@ import "../css/storageblock.scss"
 import InputObject from '../forms/InputObject';
 
 import DragByMouse from '../js_modules/drag_by_mouse';
+import ContextMenu from './ContextMenu';
 
 export default class StorageBlock extends Component {
   constructor(props) {
@@ -158,7 +159,7 @@ export default class StorageBlock extends Component {
     const objs_rend = () => {
       let div = 'bottom2cells';
       return this.state.storedObjs.filter(x => x['cell_name'] == div).map((t, i) => {
-        return <div className='obj_store' {...t}  style={{left:t.x+"px",top:t.y+"px"}}>{t.name}</div>
+        return <div className='obj_store' {...t} style={{ left: t.x + "px", top: t.y + "px" }}>{t.name}</div>
       }
       );
     }
@@ -166,64 +167,75 @@ export default class StorageBlock extends Component {
     //     debugger;
     //  };
 
+    const cnxMenuRender = (data) => {
+      const cellName = data.clickedEl?.getAttribute('cellName');
+      if (!cellName) return "";
+
+      const rend = <div className='contextmenu_btns'>
+        <button onClick={this.addObject}>Добавить box в {cellName}</button>
+        <button onClick={this.saveXYZstoredObjs}>Сохранить XYZ в {cellName}</button>
+      </div>;
+      return rend;
+    }
+
     return (
       <div>
 
-        <InputObject show={this.state.add_show} onClose={this.switchWindow} submit={this.state.sumbit_add}
-          current_cell={this.state.current_cell}></InputObject>
+        <ContextMenu render={data => cnxMenuRender(data)}></ContextMenu>
 
+        <header>
+          <div className='finder_header'>
+            <input type="text"></input>
+            <button className='find'>Найти</button>
+          </div>
+          <div className='header_info'>
+          </div>
 
-        <div className='finder_header'>
-          <input type="text"></input>
-          <button className='find'>Найти</button>
-          <button className='add_box' onClick={this.addObject}>Добавить</button>
-        </div>
-        <div className='header_info'>
-          <div className='current_cell'>Текущая ячейка - {this.state.current_cell}</div>
-          <button onClick={this.saveXYZstoredObjs}>Сохранить XYZ</button>
-        </div>
+          <InputObject show={this.state.add_show} onClose={this.switchWindow} submit={this.state.sumbit_add}
+            current_cell={this.state.current_cell}></InputObject>
+        </header>
 
-        <div className='cells_data'>
+        <main>
+          <div className='cells_data'>
 
-          <div className='wardrobe_tv'>
-
-            <div className='top' style={{ display: 'flex' }}>
-              <div className='cell' w="86" h="50" d="56" cellName="bottom2cells"></div>
-              <div className='cell' w="41.5" h="50" d="56" cellName="bottom1cell"></div>
-            </div>
-            <div className='middle' style={{ display: 'flex' }}>
-              <div className='middle-left'>
-                <div className='cell empty_space' w="84.5" h="26" d="56"></div>
-                <div className='cell empty_space' w="84.5" h="29" d="56"></div>
-                <div className='cell empty_space' w="84.5" h="83" d="56"></div>
+            <div className='wardrobe_tv'>
+              <div className='top' style={{ display: 'flex' }}>
+                <div className='cell' w="86" h="50" d="56" cellName="bottom2cells"></div>
+                <div className='cell' w="41.5" h="50" d="56" cellName="bottom1cell"></div>
               </div>
-              <div className='middle-right' style={{ display: 'flex', flexDirection: 'column', 'align-items': "center" }}>
-                <div className='cell empty_space' w="41.5" h="26" d="56"></div>
-                <div className='cell' w="38" h="18.5" d="39" cellName="drawer"></div>
-                <div className='cell' w="38" h="18.5" d="39" cellName="drawer"></div>
-                <div className='cell' w="38" h="18.5" d="39" cellName="drawer"></div>
-                <div className='cell' w="38" h="18.5" d="39" cellName="drawer"></div>
-                <div className='cell empty_space' w="41.5" h="34.5" d="56"></div>
+              <div className='middle' style={{ display: 'flex' }}>
+                <div className='middle-left'>
+                  <div className='cell empty_space' w="84.5" h="26" d="56"></div>
+                  <div className='cell empty_space' w="84.5" h="29" d="56"></div>
+                  <div className='cell empty_space' w="84.5" h="83" d="56"></div>
+                </div>
+                <div className='middle-right' style={{ display: 'flex', flexDirection: 'column', 'align-items': "center" }}>
+                  <div className='cell empty_space' w="41.5" h="26" d="56"></div>
+                  <div className='cell' w="38" h="18.5" d="39" cellName="drawer"></div>
+                  <div className='cell' w="38" h="18.5" d="39" cellName="drawer"></div>
+                  <div className='cell' w="38" h="18.5" d="39" cellName="drawer"></div>
+                  <div className='cell' w="38" h="18.5" d="39" cellName="drawer"></div>
+                  <div className='cell empty_space' w="41.5" h="34.5" d="56"></div>
+                </div>
               </div>
-            </div>
 
-            <div className='row'>
-              <div className='cell' w="86" h="45" d="56" cellName="bottom2cells">
+              <div className='row'>
+                <div className='cell' w="86" h="45" d="56" cellName="bottom2cells">
 
-                {
-                  objs_rend()
-                }
+                  {
+                    objs_rend()
+                  }
 
+                </div>
+                <div className='cell' w="41.5" h="45" d="56" cellName="bottom1cell"></div>
               </div>
-              <div className='cell' w="41.5" h="45" d="56" cellName="bottom1cell"></div>
-            </div>
 
+
+            </div>
 
           </div>
 
-        </div>
-
-
+        </main>
       </div>
     )
   }

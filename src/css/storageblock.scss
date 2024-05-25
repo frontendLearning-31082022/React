@@ -1,3 +1,5 @@
+$header_height: 100px;
+
 .finder_header {
     width: 100%;
     height: 40px;
@@ -23,6 +25,7 @@
         background: #ddcb25;
         border: solid;
         position: absolute;
+        font-size: 0.6em;
     }
 }
 
@@ -33,4 +36,29 @@
 
 .row {
     display: flex;
+}
+
+header {
+    position: fixed;
+    top: 0px;
+    z-index: 100;
+    width: 100vw;
+    background: black;
+    padding: 3px;
+    color: white;
+    height: $header_height;
+}
+main {
+    margin-top: $header_height;
+}
+
+.contextmenu_content {
+    padding: 20px 10px;
+    border: solid;
+    
+    .contextmenu_btns {
+        display: flex;
+        flex-direction: column;
+        gap:10px;
+    }
 }
