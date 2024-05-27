@@ -29,14 +29,14 @@ export default class StorageBlock extends Component {
     this.saveXYZboxes = this.saveXYZboxes.bind(this);
     this.modifyObjs = this.modifyObjs.bind(this);
 
-    this.ip = 'http://192.168.1.45:8080/'
+    // this.ip = 'http://192.168.1.45:8080/'
+    this.ip = 'http://192.168.1.2:8080/'
   }
 
-  switchWindow() {
   switchWindow(type) {
-    type=type?type:null;
+    type = type ? type : null;
     this.setState((state, props) => ({
-      add_show_type:type,add_show: !state.add_show
+      add_show_type: type, add_show: !state.add_show
     }));
   }
 
@@ -179,7 +179,7 @@ export default class StorageBlock extends Component {
         <header>
           <div className='finder_header'>
             <input type="text"></input>
-            <button className='find'>Найти</button>
+            <button className='find button-74'>Найти</button>
           </div>
           <div className='header_info'>
           </div>

@@ -1,4 +1,6 @@
-$header_height: 100px;
+$header_height: 57px;
+
+@import "templales.css";
 
 .finder_header {
     width: 100%;
@@ -6,13 +8,17 @@ $header_height: 100px;
     display: flex;
 
     input {
-        width: 70%;
+        width: 100%;
         height: inherit;
     }
 
     button {
         width: 14%;
         height: inherit;
+    }
+
+    & * {
+        height: 100%;
     }
 }
 
@@ -43,11 +49,12 @@ header {
     top: 0px;
     z-index: 100;
     width: 100vw;
-    background: black;
+    background: #afafaf;
     padding: 3px;
     color: white;
     height: $header_height;
 }
+
 main {
     margin-top: $header_height;
 }
@@ -55,10 +62,10 @@ main {
 .contextmenu_content {
     padding: 20px 10px;
     border: solid;
-    
+
     .contextmenu_btns {
         display: flex;
         flex-direction: column;
-        gap:10px;
+        gap: 10px;
     }
 }
