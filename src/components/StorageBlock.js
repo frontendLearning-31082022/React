@@ -10,7 +10,7 @@ export default class StorageBlock extends Component {
     super(props);
 
     this.state = {
-      add_show: false, sumbit_add: () => { }, current_cell: "",
+      add_show: false, add_show_type: null, sumbit_add: () => { }, current_cell: "",
       boxes: []
     };
 
@@ -23,6 +23,7 @@ export default class StorageBlock extends Component {
     }
 
     this.addBox = this.addBox.bind(this);
+    this.addItem = this.addItem.bind(this);
     this.switchWindow = this.switchWindow.bind(this);
     this.getAll = this.getAll.bind(this);
     this.saveXYZboxes = this.saveXYZboxes.bind(this);
@@ -32,8 +33,10 @@ export default class StorageBlock extends Component {
   }
 
   switchWindow() {
+  switchWindow(type) {
+    type=type?type:null;
     this.setState((state, props) => ({
-      add_show: !state.add_show
+      add_show_type:type,add_show: !state.add_show
     }));
   }
 
@@ -87,7 +90,7 @@ export default class StorageBlock extends Component {
       });
     };
     this.setState({ sumbit_add: addFn });
-    this.switchWindow();
+    this.switchWindow("addBox");
   }
   async modifyObjs(objs) {
     const postModify = async (obj) => {
@@ -121,6 +124,9 @@ export default class StorageBlock extends Component {
     });
   }
 
+  addItem() {
+    this.switchWindow("addItem");
+  }
 
   componentDidMount() {
     [...document.getElementsByClassName('cell')].forEach(el => {
@@ -160,6 +166,7 @@ export default class StorageBlock extends Component {
       const rend = <div className='contextmenu_btns'>
         <button onClick={this.addBox}>Добавить box в {cellName}</button>
         <button onClick={this.saveXYZboxes}>Сохранить XYZ в {cellName}</button>
+        <button onClick={this.addItem}>Добавить предмет в cell {cellName}</button>
       </div>;
       return rend;
     }
@@ -178,7 +185,7 @@ export default class StorageBlock extends Component {
           </div>
 
           <InputObject show={this.state.add_show} onClose={this.switchWindow} submit={this.state.sumbit_add}
-            current_cell={this.state.current_cell}></InputObject>
+            current_cell={this.state.current_cell} type={this.state.add_show_type} ></InputObject>
         </header>
 
         <main>

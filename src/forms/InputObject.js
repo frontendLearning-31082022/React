@@ -87,6 +87,22 @@ export default function InputObject(props) {
                             onChange={input} ></input>
                     </div>
                 )}
+    const renderAddBox = [...fields].map((t, i) =>
+        <div className={t}>
+            {t} <input field={t} className={'add_new_window_arg'} value={inputsData[t]}
+                onChange={input} ></input>
+        </div>
+    );
+
+    const renderAddItem =<div></div>
+
+            <div className='content_add'>
+                <button className='close_add' onClick={props.onClose} ></button>
+
+                Введите новый объект
+
+                {(props.type == 'addItem') ? renderAddItem : ''}
+                {(props.type == 'addBox') ? renderAddBox : ''}
 
                 <button onClick={() => { submit(props.submit) }}>добавить</button>
 
