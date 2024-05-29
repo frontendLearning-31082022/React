@@ -56,8 +56,8 @@ export default class StorageBlock extends Component {
             const ctx = this;
             const updFN = (val) => {
               const cur = ctx.state.boxes;
-              cur[i].x = val.x;
-              cur[i].y = val.y;
+              cur[i-1].x = val.x;
+              cur[i-1].y = val.y;
               ctx.setState({ boxes: cur });
             };
 
