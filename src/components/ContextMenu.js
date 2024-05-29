@@ -7,15 +7,27 @@ export default function ContextMenu(props) {
     const [xy, setXy] = useState({ x: 0, y: 0 });
     const refClicked = useRef(null);
 
+    const [clickNoDrag, setClickNoDragy] = useState(0);
+
     const detectClick = (e) => {
+        if(Math.abs(e.clientX-clickNoDrag)>3 )return;
+
         setShow((prev) => { return !prev });
         setXy({ x: e.clientX, y: e.clientY });
         refClicked.current = e.target;
     }
+    const setXOnDown=(e)=>{
+        setClickNoDragy(e.clientX);
+    }
 
     useEffect(() => {
-        document.addEventListener('click', detectClick, false);
-    }, [])
+        window.addEventListener('mousedown', setXOnDown);
+        window.addEventListener('mouseup', detectClick);
+        return () => {
+            window.removeEventListener('mousedown', setXOnDown);
+            window.removeEventListener('mouseup', detectClick);
+        };
+    }, [clickNoDrag])
 
     const style = <style>{` .contextmenu_content { background: #ebe08b;} 
     .contextmenu {position: fixed; z-index: 1000000;} 
