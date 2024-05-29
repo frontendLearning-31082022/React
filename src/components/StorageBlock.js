@@ -31,6 +31,8 @@ export default class StorageBlock extends Component {
 
     // this.ip = 'http://192.168.1.45:8080/'
     this.ip = 'http://192.168.1.2:8080/'
+    this.ip = 'http://192.168.1.45:8080/'
+    // this.ip = 'http://192.168.1.2:8080/'
   }
 
   switchWindow(type) {
@@ -148,16 +150,11 @@ export default class StorageBlock extends Component {
   // <div key={i}>{t.name}</div>
   render() {
 
-    const objs_rend = () => {
-      let div = 'bottom2cells';
-      return this.state.boxes.filter(x => x['cell_name'] == div).map((t, i) => {
+    const objs_rend = (cellName) => {
+      return this.state.boxes.filter(x => x['cell_name'] == cellName).map((t, i) => {
         return <div className='obj_store' {...t} style={{ left: t.x + "px", top: t.y + "px" }}>{t.name}</div>
-      }
-      );
+      });
     }
-    // const rendObjs = (ctxt) => {
-    //     debugger;
-    //  };
 
     const cnxMenuRender = (data) => {
       const cellName = data.clickedEl?.getAttribute('cellName');
@@ -169,7 +166,7 @@ export default class StorageBlock extends Component {
         <button onClick={this.addItem}>Добавить предмет в cell {cellName}</button>
       </div>;
       return rend;
-    }
+    };
 
     return (
       <div>
@@ -193,8 +190,8 @@ export default class StorageBlock extends Component {
 
             <div className='wardrobe_tv'>
               <div className='top' style={{ display: 'flex' }}>
-                <div className='cell' w="86" h="50" d="56" cellName="bottom2cells"></div>
-                <div className='cell' w="41.5" h="50" d="56" cellName="bottom1cell"></div>
+                <div className='cell' w="86" h="50" d="56" cellName="top2cells">{objs_rend("top2cells")}</div>
+                <div className='cell' w="41.5" h="50" d="56" cellName="top1cell">{objs_rend("top1cell")}</div>
               </div>
               <div className='middle' style={{ display: 'flex' }}>
                 <div className='middle-left'>
@@ -204,25 +201,17 @@ export default class StorageBlock extends Component {
                 </div>
                 <div className='middle-right' style={{ display: 'flex', flexDirection: 'column', 'align-items': "center" }}>
                   <div className='cell empty_space' w="41.5" h="26" d="56"></div>
-                  <div className='cell' w="38" h="18.5" d="39" cellName="drawer"></div>
-                  <div className='cell' w="38" h="18.5" d="39" cellName="drawer"></div>
-                  <div className='cell' w="38" h="18.5" d="39" cellName="drawer"></div>
-                  <div className='cell' w="38" h="18.5" d="39" cellName="drawer"></div>
+                  <div className='cell' w="38" h="18.5" d="39" cellName="drawer 1">{objs_rend("drawer 1")}</div>
+                  <div className='cell' w="38" h="18.5" d="39" cellName="drawer 2">{objs_rend("drawer 2")}</div>
+                  <div className='cell' w="38" h="18.5" d="39" cellName="drawer 3">{objs_rend("drawer 3")}</div>
+                  <div className='cell' w="38" h="18.5" d="39" cellName="drawer 4">{objs_rend("drawer 4")}</div>
                   <div className='cell empty_space' w="41.5" h="34.5" d="56"></div>
                 </div>
               </div>
-
-              <div className='row'>
-                <div className='cell' w="86" h="45" d="56" cellName="bottom2cells">
-
-                  {
-                    objs_rend()
-                  }
-
-                </div>
-                <div className='cell' w="41.5" h="45" d="56" cellName="bottom1cell"></div>
+              <div className='row bottom'>
+                <div className='cell' w="86" h="45" d="56" cellName="bottom2cells">{objs_rend("bottom2cells")}</div>
+                <div className='cell' w="41.5" h="45" d="56" cellName="bottom1cell">{objs_rend("bottom1cell")}</div>
               </div>
-
 
             </div>
 
