@@ -29,7 +29,6 @@ export default function InputObject(props) {
         // });
 
         setInputsData(state => ({ ...state, "cell_name": props.current_cell }));
-
     };
 
     const onOpenCloseUpdate = useMemo(setter, [props.show]);
@@ -59,7 +58,16 @@ export default function InputObject(props) {
             top: 0px;
             background: #b32727;
             border: none;
-        } `;
+        } 
+        .add_item_window {
+            display:flex;
+            flex-direction:column;
+        }
+
+        .add_item_window input {
+            width:fit-content;
+        }
+        `;
 
     const renderAddBox = [...fields].map((t, i) =>
         <div className={t}>
@@ -68,7 +76,15 @@ export default function InputObject(props) {
         </div>
     );
 
-    const renderAddItem = <div></div>
+    const renderAddItem = <div className="add_item_window">
+        Name <input field="name" className="add_new_window_arg" ></input>
+        Cell name <input field="cell_name" className="add_new_window_arg" value={inputsData['cell_name']}></input>
+        isItem <input field="isItem" className="add_new_window_arg" value="true"></input>
+        w <input field="w" className="add_new_window_arg"></input>
+        h <input field="h" className="add_new_window_arg"></input>
+        d <input field="d" className="add_new_window_arg"></input>
+
+    </div>
 
     return (
         <div style={{ visibility: (props.show ? "initial" : "hidden") }}>

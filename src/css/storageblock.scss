@@ -69,3 +69,13 @@ main {
         gap: 10px;
     }
 }
+
+@media only screen and (min-width: 769px) and (max-width: 1181px){
+    .contextmenu_content {
+        .contextmenu_btns {
+            button {
+                padding: 40px 20px;
+            }
+        }
+    }
+}

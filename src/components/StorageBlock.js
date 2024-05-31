@@ -22,7 +22,7 @@ export default class StorageBlock extends Component {
       el.style.height = height + "px";
     }
 
-    this.addBox = this.addBox.bind(this);
+    this.addFN = this.addFN.bind(this);
     this.addItem = this.addItem.bind(this);
     this.switchWindow = this.switchWindow.bind(this);
     this.getAll = this.getAll.bind(this);
@@ -56,8 +56,8 @@ export default class StorageBlock extends Component {
             const ctx = this;
             const updFN = (val) => {
               const cur = ctx.state.boxes;
-              cur[i-1].x = val.x;
-              cur[i-1].y = val.y;
+              cur[i].x = val.x;
+              cur[i].y = val.y;
               ctx.setState({ boxes: cur });
             };
 
@@ -74,7 +74,7 @@ export default class StorageBlock extends Component {
     return json;
   }
 
-  addBox() {
+  addFN() {
     const addFn = (fields) => {
 
       // String json=[...fields]
@@ -92,7 +92,6 @@ export default class StorageBlock extends Component {
       });
     };
     this.setState({ sumbit_add: addFn });
-    this.switchWindow("addBox");
   }
   async modifyObjs(objs) {
     const postModify = async (obj) => {
@@ -110,7 +109,7 @@ export default class StorageBlock extends Component {
       const ok = await postModify(objs[index]);
       if (!ok) return false;
     }
-
+    return true;
   }
 
   saveXYZboxes() {
@@ -131,6 +130,8 @@ export default class StorageBlock extends Component {
   }
 
   componentDidMount() {
+    this.addFN();
+
     [...document.getElementsByClassName('cell')].forEach(el => {
       this.scaleFN(el);
 
@@ -152,7 +153,9 @@ export default class StorageBlock extends Component {
 
     const objs_rend = (cellName) => {
       return this.state.boxes.filter(x => x['cell_name'] == cellName).map((t, i) => {
-        return <div className='obj_store' {...t} style={{ left: t.x + "px", top: t.y + "px" }}>{t.name}</div>
+        return <div className={'obj_store'+(t.isItem?' item':'')}
+                 {...t} 
+         style={{ left: t.x + "px", top: t.y + "px" }}>{t.name}</div>
       });
     }
 
@@ -161,7 +164,7 @@ export default class StorageBlock extends Component {
       if (!cellName) return "";
 
       const rend = <div className='contextmenu_btns'>
-        <button onClick={this.addBox}>Добавить box в {cellName}</button>
+        <button onClick={() => { this.switchWindow("addBox"); }}>Добавить box в {cellName}</button>
         <button onClick={this.saveXYZboxes}>Сохранить XYZ в {cellName}</button>
         <button onClick={this.addItem}>Добавить предмет в cell {cellName}</button>
       </div>;

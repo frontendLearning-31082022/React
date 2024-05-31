@@ -9,14 +9,22 @@ export default function ContextMenu(props) {
 
     const [clickNoDrag, setClickNoDragy] = useState(0);
 
+    const refRoot = React.createRef();
+
     const detectClick = (e) => {
-        if(Math.abs(e.clientX-clickNoDrag)>3 )return;
+        if (e instanceof Error) return;
+        if (e==null) return;
+        if (refRoot.current==null) return;
+
+        if (Math.abs(e.clientX - clickNoDrag) > 3) return;
+
+        if (refRoot.current.contains(e.target)) return
 
         setShow((prev) => { return !prev });
         setXy({ x: e.clientX, y: e.clientY });
         refClicked.current = e.target;
     }
-    const setXOnDown=(e)=>{
+    const setXOnDown = (e) => {
         setClickNoDragy(e.clientX);
     }
 
@@ -34,7 +42,7 @@ export default function ContextMenu(props) {
     div.contextmenu_content:empty {visibility:hidden} `}</style>
 
     return (
-        <div style={{ top: xy.y, left: xy.x, visibility: show ? 'initial' : 'hidden' }} className='contextmenu'>
+        <div style={{ top: xy.y, left: xy.x, visibility: show ? 'initial' : 'hidden' }} className='contextmenu' ref={refRoot}>
             {style}
             <div className='contextmenu_content'>
                 {props.render({ clickedEl: refClicked.current })}
