@@ -23,6 +23,7 @@ export default class SkillsViewer extends Component {
         this.loadData = this.loadData.bind(this);
         this.sortTasks = this.sortTasks.bind(this);
         this.filterTasks = this.filterTasks.bind(this);
+        this.queryRouterOneUrl = this.queryRouterOneUrl.bind(this);
     }
 
     async loadData() {
@@ -43,7 +44,7 @@ export default class SkillsViewer extends Component {
                 const task = {};
                 titles.forEach((title, i) => {
                     if (!title) return;
-                    task[title] = x.children[i].textContent;
+                    task[title] = x.children[i]?.textContent;
                     if (title === 'Условие задачи') task[title] = x.children[i].outerHTML;
                 });
                 if (task['Ссылка git'] != '') tasks.push(task);
@@ -131,8 +132,22 @@ export default class SkillsViewer extends Component {
         this.loadData().then(x => {
             this.sortTasks(sortType.relevance);
         });
+        this.loadData()
+            .then(x => {
+                this.sortTasks(sortType.relevance);
+            }).then(x => {
+                this.queryRouterOneUrl();
+            });
 
         setTimeout(() => { ctx.setState({ blink_once: false }); }, 10000);
+    }
+
+    queryRouterOneUrl() {
+        const query = new URLSearchParams(window.location.search);
+        if (query.size < 1) return;
+
+        const tags = query.getAll('tag');
+        tags.forEach(x => this.filterTasks(x));
     }
 
     render() {
