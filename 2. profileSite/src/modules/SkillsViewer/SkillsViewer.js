@@ -89,9 +89,12 @@ export default class SkillsViewer extends Component {
             });
 
         let tags = new Set();
-        this.state.tasks.forEach(x => {
+        this.tasks_all.forEach(x => {
             x.hashtag.split(',').forEach(x => tags.add(x.trim()));
         });
+        tags = new Set([...tags, ...this.tasks_all.map(x => x['Название предмета'])]);
+        tags.delete('');
+
         this.tags = [...tags].filter(x => x.length > 0);
     }
 
@@ -121,7 +124,8 @@ export default class SkillsViewer extends Component {
 
         const filtered = this.tasks_all.filter(x => {
             const tagsOnTask = x.hashtag.split(',').map(p => p.trim());
-            const hasChoosedTags = tagsOnTask.some(r => [...this.state.filterWords].includes(r))
+            if ([...this.state.filterWords].includes(x['Название предмета'])) return true;
+            const hasChoosedTags = tagsOnTask.some(r => [...this.state.filterWords].includes(r));
             return hasChoosedTags;
         });
         this.setState({ tasks: filtered });

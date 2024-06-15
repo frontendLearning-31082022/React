@@ -29,10 +29,9 @@ export default function WindowsModal(props) {
     }
 
     return (
-        <div className={classN} style={{  ...{ visibility: show ? 'visible' : 'hidden' } }}
-            onClick={() => setShow(!show)}>
+        <div className={classN} style={{  ...{ visibility: show ? 'visible' : 'hidden' } }}>
             {style.window}
-            <button className={classN + '_hide'} style={btn}>X</button>
+            <button className={classN + '_hide'} style={btn}  onClick={() => setShow(!show)}>X</button>
             {props.children}
         </div>
     )
