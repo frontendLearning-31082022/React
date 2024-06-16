@@ -3,9 +3,10 @@ import React from 'react'
 import './Resume.scss';
 
 const sites = [
-    { logo: 'HH', name: 'HeadHunter', back: 'fb2719', href: '' },
-    { logo: 'SJ', name: 'SuperJob', back: '00aa87', href: '' },
-    { logo: 'JL', name: 'JobLab', back: '1a4f7e', href: '' }
+    { logo: 'HH', name: 'HeadHunter', back: 'fb2719', href: '#' },
+    { logo: 'SJ', name: 'SuperJob', back: '00aa87', href: '#' },
+    { logo: 'JL', name: 'JobLab', back: '1a4f7e', href: '#' },
+    { logo: '@', name: 'email', back: 'd0851c', href: '#', window: 'window_modal_email' }
 ];
 
 export default function Resume() {

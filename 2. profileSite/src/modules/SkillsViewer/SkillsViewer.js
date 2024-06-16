@@ -122,20 +122,17 @@ export default class SkillsViewer extends Component {
 
         this.setState({ filterWords: this.state.filterWords });
 
-        const filtered = this.tasks_all.filter(x => {
+        let filtered = this.tasks_all.filter(x => {
             const tagsOnTask = x.hashtag.split(',').map(p => p.trim());
             if ([...this.state.filterWords].includes(x['Название предмета'])) return true;
             const hasChoosedTags = tagsOnTask.some(r => [...this.state.filterWords].includes(r));
             return hasChoosedTags;
         });
-        this.setState({ tasks: filtered });
+        this.setState({ tasks: filtered }, () => { this.sortTasks(this.state.sortType); });
     }
 
     componentDidMount() {
         const ctx = this;
-        this.loadData().then(x => {
-            this.sortTasks(sortType.relevance);
-        });
         this.loadData()
             .then(x => {
                 this.sortTasks(sortType.relevance);
@@ -176,11 +173,13 @@ export default class SkillsViewer extends Component {
                                     <div className='container_subject_logo'>
                                         <img src={`./subjs_imgs/${t['logo']}.png`} className='task_subject_logo'></img>
                                     </div>
+
                                     <span className='subject' key={i + 'sub'} onClick={() => { this.filterTasks(t['Название предмета']) }} >{t['Название предмета']}</span>
                                     <div className="task_descp" dangerouslySetInnerHTML={{ __html: t['Условие задачи'] }} key={i + 'task_descp'} ></div>
                                     <div className='task_tags'> {t['hashtag'].split(',').map((h, hi) =>
-                                        <span className='task_tag' onClick={filterClickWord} >#<span>{h.trim()}</span></span>
+                                        <span className='task_tag' onClick={filterClickWord} >{h.trim().length > 0 ? '#' : ''}<span>{h.trim()}</span></span>
                                     )}</div>
+
                                 </div>
                                 <a className={'subject_solve' + (i === 1 && this.state.blink_once ?
                                     ' blink_once' : '')} key={i + 'sub_solve'} href={t['Ссылка git']}>Реализация</a>
