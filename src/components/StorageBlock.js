@@ -31,8 +31,6 @@ export default class StorageBlock extends Component {
     this.z_index = this.z_index.bind(this);
 
     // this.ip = 'http://192.168.1.45:8080/'
-    this.ip = 'http://192.168.1.2:8080/'
-    this.ip = 'http://192.168.1.45:8080/'
     this.ip = 'https://192.168.1.2/'
     // this.ip = 'https://192.168.1.2:8079/'
     // this.ip = 'http://192.168.1.45:8080/'
@@ -169,12 +167,32 @@ export default class StorageBlock extends Component {
         return <div className={'obj_store'+(t.isItem?' item':'')}
                  {...t} 
          style={{ left: t.x + "px", top: t.y + "px" }}>{t.name}</div>
+        return <div className={'obj_store ' + (t.isItem ? 'item' : 'box')} z
+          {...t}
+          style={{ left: t.x + "px", top: t.y + "px", zIndex: t.z }}>{t.name} </div>
       });
     }
 
-    const cnxMenuRender = (data) => {
+
+    const cnxMenuRender_box = (data) => {
       const cellName = data.clickedEl?.getAttribute('cellName');
       if (!cellName) return "";
+      const id = data.clickedEl?.getAttribute('id');
+      const z = data.clickedEl?.getAttribute('z');
+
+      const rend = <div className='contextmenu_btns'>
+
+        <button onClick={() => { this.z_index(true, id) }}>z-up ({z})</button>
+        {z == 0 ? '' :
+          <button onClick={() => { this.z_index(false, id) }}>z-down ({z})</button>
+        }
+        {/* <button onClick={this.addItem}>Добавить предмет в cell {cellName}</button> */}
+      </div>;
+      return rend;
+    };
+
+    const cnxMenuRender_cell = (data) => {
+      const cellName = data.clickedEl?.getAttribute('cellname');
 
       const rend = <div className='contextmenu_btns'>
         <button onClick={() => { this.switchWindow("addBox"); }}>Добавить box в {cellName}</button>
@@ -182,6 +200,19 @@ export default class StorageBlock extends Component {
         <button onClick={this.addItem}>Добавить предмет в cell {cellName}</button>
       </div>;
       return rend;
+    };
+
+
+    const cnxMenuRender = (data) => {
+      const cellName = data.clickedEl?.className;
+      const isCell = data.clickedEl?.className?.indexOf('cell') > -1;
+      const isBox = data.clickedEl?.className?.indexOf('box') > -1;
+      const isItem = data.clickedEl?.className?.indexOf('item') > -1;
+
+      if (isCell) return cnxMenuRender_cell(data);
+      if (isBox) return cnxMenuRender_box(data);
+      if (isItem) return cnxMenuRender_box(data);
+      if (!cellName) return "";
     };
 
     return (
