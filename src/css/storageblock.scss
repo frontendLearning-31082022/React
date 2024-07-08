@@ -29,6 +29,47 @@ $header_height: 57px;
 
     .obj_store {
         background: #ddcb25;
+
+    div[z="0"] {
+        display: flex;
+        align-items: end;
+        filter: alpha(opacity=50);
+        // opacity: 0.8;
+        &::before {
+            opacity: 0.6;
+        }
+    }
+
+    div[z="1"] {
+        display: flex;
+        align-items: end;
+        filter: alpha(opacity=50);
+        // opacity: 0.8;
+        &::before {
+            opacity: 0.6;
+        }
+    }
+
+    div[z="2"] {
+        display: flex;
+        align-items: center;
+
+        &::before {
+            opacity: 0.4;
+        }
+
+    }
+
+    div[z="3"] {
+        display: flex;
+        align-items: center;
+
+        &::before {
+            opacity: 0.4;
+        }
+
+    }
+
         border: solid;
         position: absolute;
         font-size: 0.6em;

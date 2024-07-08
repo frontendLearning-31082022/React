@@ -28,6 +28,7 @@ export default class StorageBlock extends Component {
     this.getAll = this.getAll.bind(this);
     this.saveXYZboxes = this.saveXYZboxes.bind(this);
     this.modifyObjs = this.modifyObjs.bind(this);
+    this.z_index = this.z_index.bind(this);
 
     // this.ip = 'http://192.168.1.45:8080/'
     this.ip = 'http://192.168.1.2:8080/'
@@ -144,6 +145,15 @@ export default class StorageBlock extends Component {
     });
 
     this.onLoadBoxes();
+
+  }
+
+  z_index(up, id) {
+    let index = this.state.boxes.findIndex(x => x.id == id);
+    const el = this.state.boxes[index];
+    el.z = up ? el.z + 1 : el.z - 1;
+    this.state.boxes[index] = el;
+    this.setState({ boxes: this.state.boxes });
 
   }
 
