@@ -235,6 +235,8 @@ export default class StorageBlock extends Component {
         <main>
           <div className='cells_data'>
 
+            {/* <div className='' style={{ width: '800px', height: '800px', background: 'black' }}></div> */}
+
             <div className='wardrobe_tv'>
               <div className='top' style={{ display: 'flex' }}>
                 <div className='cell' w="86" h="50" d="56" cellName="top2cells">{objs_rend("top2cells")}</div>
