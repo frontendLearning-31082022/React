@@ -33,6 +33,9 @@ export default class StorageBlock extends Component {
     // this.ip = 'http://192.168.1.45:8080/'
     this.ip = 'http://192.168.1.2:8080/'
     this.ip = 'http://192.168.1.45:8080/'
+    this.ip = 'https://192.168.1.2/'
+    // this.ip = 'https://192.168.1.2:8079/'
+    // this.ip = 'http://192.168.1.45:8080/'
     // this.ip = 'http://192.168.1.2:8080/'
   }
 
