@@ -164,9 +164,6 @@ export default class StorageBlock extends Component {
 
     const objs_rend = (cellName) => {
       return this.state.boxes.filter(x => x['cell_name'] == cellName).map((t, i) => {
-        return <div className={'obj_store'+(t.isItem?' item':'')}
-                 {...t} 
-         style={{ left: t.x + "px", top: t.y + "px" }}>{t.name}</div>
         return <div className={'obj_store ' + (t.isItem ? 'item' : 'box')} z
           {...t}
           style={{ left: t.x + "px", top: t.y + "px", zIndex: t.z }}>{t.name} </div>
@@ -176,7 +173,6 @@ export default class StorageBlock extends Component {
 
     const cnxMenuRender_box = (data) => {
       const cellName = data.clickedEl?.getAttribute('cellName');
-      if (!cellName) return "";
       const id = data.clickedEl?.getAttribute('id');
       const z = data.clickedEl?.getAttribute('z');
 
