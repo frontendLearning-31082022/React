@@ -28,7 +28,11 @@ $header_height: 57px;
     position: relative;
 
     .obj_store {
-        background: #ddcb25;
+        position: absolute;
+        font-size: 0.6em;
+
+    }
+
 
     div[z="0"] {
         display: flex;
@@ -70,9 +74,30 @@ $header_height: 57px;
 
     }
 
+    .box {
         border: solid;
-        position: absolute;
-        font-size: 0.6em;
+        &::before {
+            content: "";
+            background: #ddcb25;
+            display: inline-block;
+            width: inherit;
+            height: inherit;
+            position: absolute;
+            z-index: -1;
+        }
+    }
+
+    .item {
+        border: solid;
+        &::before {
+            content: "";
+            background: #afafaf;
+            display: inline-block;
+            width: inherit;
+            height: inherit;
+            position: absolute;
+            z-index: -1;
+        }
     }
 }
 
