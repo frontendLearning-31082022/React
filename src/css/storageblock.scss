@@ -22,6 +22,18 @@ $header_height: 57px;
     }
 }
 
+.scale {
+    // scale: 0.2;
+    // transform-origin: top left;
+}
+
+.max {
+//     &  *{
+//         max-width: 10px !important;
+//         max-height: auto;
+//     }
+}
+
 .cell {
     background: #a36565;
     border: solid;
