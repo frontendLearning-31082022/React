@@ -86,6 +86,19 @@ $header_height: 57px;
 
     }
 
+    @for $z from 1 through 3 {
+        div[z="#{$z}"]::after {
+            content: "#{$z}";
+            position: absolute;
+            animation-range-end: 0px;
+            right: 0px;
+            bottom: 0px;
+            color: white;
+            background: black;
+            margin: 2px;
+        }
+    }
+
     .box {
         border: solid;
         &::before {
