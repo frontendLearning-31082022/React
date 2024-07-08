@@ -14,11 +14,14 @@ export default function ContextMenu(props) {
     const detectClick = (e) => {
         if (e instanceof Error) return;
         if (e==null) return;
-        if (refRoot.current==null) return;
+
+        if(show){
+            if(refRoot.current==null)return;
+            if (refRoot.current.contains(e.target)) return
+        }
 
         if (Math.abs(e.clientX - clickNoDrag) > 3) return;
 
-        if (refRoot.current.contains(e.target)) return
 
         setShow((prev) => { return !prev });
         setXy({ x: e.clientX, y: e.clientY });
