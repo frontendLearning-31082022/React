@@ -4,6 +4,7 @@ import InputObject from '../forms/InputObject';
 
 import DragByMouse from '../js_modules/drag_by_mouse';
 import ContextMenu from './ContextMenu';
+import PanelQuick from './PanelQuick';
 
 export default class StorageBlock extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class StorageBlock extends Component {
 
     this.state = {
       add_show: false, add_show_type: null, sumbit_add: () => { }, current_cell: "",
-      boxes: []
+      boxes: [], layer_current: -1
     };
 
     this.scale = 5;
@@ -29,6 +30,7 @@ export default class StorageBlock extends Component {
     this.saveXYZboxes = this.saveXYZboxes.bind(this);
     this.modifyObjs = this.modifyObjs.bind(this);
     this.z_index = this.z_index.bind(this);
+    this.switchShowedLayer = this.switchShowedLayer.bind(this);
 
     this.ip = process.env.REACT_APP_IP_SERVER;
   }
@@ -151,7 +153,15 @@ export default class StorageBlock extends Component {
     el.z = up ? el.z + 1 : el.z - 1;
     this.state.boxes[index] = el;
     this.setState({ boxes: this.state.boxes });
+    this.setState({ boxes: this.state.boxes },
+      () => { this.forceUpdate(); });
+  }
 
+
+  switchShowedLayer(up) {
+    let newLayer = this.state.layer_current + (up ? 1 : -1);
+    newLayer = newLayer < -1 ? -1 : newLayer;
+    this.setState({ layer_current: newLayer });
   }
 
   // w={t.w} h={t.h} d={t.d} x={t.x} y={t.y} z={t.z}
@@ -166,6 +176,14 @@ export default class StorageBlock extends Component {
       });
     }
 
+    let hideLayers = `
+        div[z]{
+          visibility: ${this.state.layer_current == -1 ? 'visible' : 'hidden'};
+        } 
+        div[z="${this.state.layer_current}"]{
+          visibility: visible;
+        }
+    `;
 
     const cnxMenuRender_box = (data) => {
       const cellName = data.clickedEl?.getAttribute('cellName');
@@ -209,8 +227,17 @@ export default class StorageBlock extends Component {
 
     return (
       <div>
+        <style>{hideLayers}</style>
 
         <ContextMenu render={data => cnxMenuRender(data)}></ContextMenu>
+        <PanelQuick render={() =>
+          <>
+            <button className='layer_up' onClick={() => { this.switchShowedLayer(true) }}>↑</button>
+            <div className='layer_current'>{this.state.layer_current == -1 ? 'все слои' : this.state.layer_current}</div>
+            <button className='layer_down' onClick={() => { this.switchShowedLayer(false) }}>↓</button>
+          </>
+        }>
+        </PanelQuick>
 
         <header>
           <div className='finder_header'>

@@ -165,7 +165,32 @@ main {
     }
 }
 
-@media only screen and (min-width: 769px) and (max-width: 1181px){
+.panel_quick {
+    .show_btn {
+        width: 20vw;
+        aspect-ratio: 1/1;
+    }
+
+    .panel_content {
+        background-color: black;
+        padding: 20px 10px;
+
+        display: flex;
+        flex-direction: column;
+
+        button {
+            user-select: none;
+            min-width: 30vw;
+            min-height: 40px;
+        }
+
+        .layer_current {
+            color: white;
+        }
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1181px) {
     .contextmenu_content {
         .contextmenu_btns {
             button {
@@ -173,4 +198,20 @@ main {
             }
         }
     }
+
+    .panel_quick {
+        .show_btn {
+            width: 20vw;
+        }
+        .panel_content {
+            button {
+                min-height: 10vh;
+                min-width: 20vw;
+            }
+        }
+    }
+}
+
+@viewport {
+    user-zoom: fixed;
 }
