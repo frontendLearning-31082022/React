@@ -9,22 +9,33 @@ export default function ContextMenu(props) {
 
     const [clickNoDrag, setClickNoDragy] = useState(0);
 
-    const refRoot = React.createRef();
+    const refRoot =  useRef(null);
 
     const detectClick = (e) => {
         if (e instanceof Error) return;
-        if (e==null) return;
+        if (e == null) return;
 
-        if(show){
-            if(refRoot.current==null)return;
-            if (refRoot.current.contains(e.target)) return
+        let x = 0;
+        let y = 0;
+
+        const isMouse = e.type.indexOf('mouse') != -1;
+        if (isMouse) {
+
+            x = e.clientX;
+            y = e.clientY;
+            if (Math.abs(e.clientX - clickNoDrag) > 3) return;
+        } else {
+            x = e.changedTouches[0].clientX;
+            y = e.changedTouches[0].clientY;
         }
 
-        if (Math.abs(e.clientX - clickNoDrag) > 3) return;
+        x=x-refRoot.current.offsetWidth;
+        y=y-refRoot.current.offsetHeight;
 
+        if (refRoot.current?.contains(e.target)) return;
 
         setShow((prev) => { return !prev });
-        setXy({ x: e.clientX, y: e.clientY });
+        setXy({ x: x, y: y });
         refClicked.current = e.target;
     }
     const setXOnDown = (e) => {
@@ -37,8 +48,13 @@ export default function ContextMenu(props) {
         return () => {
             window.removeEventListener('mousedown', setXOnDown);
             window.removeEventListener('mouseup', detectClick);
+            // window.removeEventListener('touchstart', detectClick);
         };
     }, [clickNoDrag])
+    useEffect(() => {
+        window.addEventListener('touchstart', detectClick);
+    }, [])
+
 
     const style = <style>{` .contextmenu_content { background: #ebe08b;} 
     .contextmenu {position: fixed; z-index: 1000000;} 
