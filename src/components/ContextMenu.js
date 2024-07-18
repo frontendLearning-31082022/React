@@ -9,7 +9,7 @@ export default function ContextMenu(props) {
 
     const [clickNoDrag, setClickNoDragy] = useState(0);
 
-    const refRoot =  useRef(null);
+    const refRoot = useRef(null);
 
     const detectClick = (e) => {
         if (e instanceof Error) return;
@@ -29,8 +29,8 @@ export default function ContextMenu(props) {
             y = e.changedTouches[0].clientY;
         }
 
-        x=x-refRoot.current.offsetWidth;
-        y=y-refRoot.current.offsetHeight;
+        x = x - refRoot.current.offsetWidth;
+        y = y - refRoot.current.offsetHeight;
 
         if (refRoot.current?.contains(e.target)) return;
 

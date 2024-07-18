@@ -32,10 +32,10 @@ body {
 }
 
 .max {
-//     &  *{
-//         max-width: 10px !important;
-//         max-height: auto;
-//     }
+    //     &  *{
+    //         max-width: 10px !important;
+    //         max-height: auto;
+    //     }
 }
 
 .cell {
@@ -54,6 +54,7 @@ body {
         display: flex;
         align-items: end;
         filter: alpha(opacity=50);
+
         // opacity: 0.8;
         &::before {
             opacity: 0.6;
@@ -64,6 +65,7 @@ body {
         display: flex;
         align-items: end;
         filter: alpha(opacity=50);
+
         // opacity: 0.8;
         &::before {
             opacity: 0.6;
@@ -105,6 +107,7 @@ body {
 
     .box {
         border: solid;
+
         &::before {
             content: "";
             background: #ddcb25;
@@ -118,6 +121,7 @@ body {
 
     .item {
         border: solid;
+
         &::before {
             content: "";
             background: #afafaf;
@@ -203,6 +207,7 @@ main {
         .show_btn {
             width: 20vw;
         }
+
         .panel_content {
             button {
                 min-height: 10vh;
