@@ -30,11 +30,7 @@ export default class StorageBlock extends Component {
     this.modifyObjs = this.modifyObjs.bind(this);
     this.z_index = this.z_index.bind(this);
 
-    // this.ip = 'http://192.168.1.45:8080/'
-    this.ip = 'https://192.168.1.2/'
-    // this.ip = 'https://192.168.1.2:8079/'
-    // this.ip = 'http://192.168.1.45:8080/'
-    // this.ip = 'http://192.168.1.2:8080/'
+    this.ip = process.env.REACT_APP_IP_SERVER;
   }
 
   switchWindow(type) {
