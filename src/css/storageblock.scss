@@ -1,0 +1,222 @@
+$header_height: 57px;
+
+@import "templales.css";
+
+body {
+    min-width: 1263px;
+}
+
+.finder_header {
+    width: 100%;
+    height: 40px;
+    display: flex;
+
+    input {
+        width: 100%;
+        height: inherit;
+    }
+
+    button {
+        width: 14%;
+        height: inherit;
+    }
+
+    & * {
+        height: 100%;
+    }
+}
+
+.scale {
+    // scale: 0.2;
+    // transform-origin: top left;
+}
+
+.max {
+    //     &  *{
+    //         max-width: 10px !important;
+    //         max-height: auto;
+    //     }
+}
+
+.cell {
+    background: #a36565;
+    border: solid;
+    position: relative;
+
+    .obj_store {
+        position: absolute;
+        font-size: 0.6em;
+
+    }
+
+
+    div[z="0"] {
+        display: flex;
+        align-items: end;
+        filter: alpha(opacity=50);
+
+        // opacity: 0.8;
+        &::before {
+            opacity: 0.6;
+        }
+    }
+
+    div[z="1"] {
+        display: flex;
+        align-items: end;
+        filter: alpha(opacity=50);
+
+        // opacity: 0.8;
+        &::before {
+            opacity: 0.6;
+        }
+    }
+
+    div[z="2"] {
+        display: flex;
+        align-items: center;
+
+        &::before {
+            opacity: 0.4;
+        }
+
+    }
+
+    div[z="3"] {
+        display: flex;
+        align-items: center;
+
+        &::before {
+            opacity: 0.4;
+        }
+
+    }
+
+    @for $z from 1 through 3 {
+        div[z="#{$z}"]::after {
+            content: "#{$z}";
+            position: absolute;
+            animation-range-end: 0px;
+            right: 0px;
+            bottom: 0px;
+            color: white;
+            background: black;
+            margin: 2px;
+        }
+    }
+
+    .box {
+        border: solid;
+
+        &::before {
+            content: "";
+            background: #ddcb25;
+            display: inline-block;
+            width: inherit;
+            height: inherit;
+            position: absolute;
+            z-index: -1;
+        }
+    }
+
+    .item {
+        border: solid;
+
+        &::before {
+            content: "";
+            background: #afafaf;
+            display: inline-block;
+            width: inherit;
+            height: inherit;
+            position: absolute;
+            z-index: -1;
+        }
+    }
+}
+
+.empty_space {
+    background: #584e4e;
+    border: solid;
+}
+
+.row {
+    display: flex;
+}
+
+header {
+    position: fixed;
+    top: 0px;
+    z-index: 100;
+    width: 100vw;
+    background: #afafaf;
+    padding: 3px;
+    color: white;
+    height: $header_height;
+}
+
+main {
+    margin-top: $header_height;
+}
+
+.contextmenu_content {
+    padding: 20px 10px;
+    border: solid;
+
+    .contextmenu_btns {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+.panel_quick {
+    .show_btn {
+        width: 20vw;
+        aspect-ratio: 1/1;
+    }
+
+    .panel_content {
+        background-color: black;
+        padding: 20px 10px;
+
+        display: flex;
+        flex-direction: column;
+
+        button {
+            user-select: none;
+            min-width: 30vw;
+            min-height: 40px;
+        }
+
+        .layer_current {
+            color: white;
+        }
+    }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 1181px) {
+    .contextmenu_content {
+        .contextmenu_btns {
+            button {
+                padding: 40px 20px;
+            }
+        }
+    }
+
+    .panel_quick {
+        .show_btn {
+            width: 20vw;
+        }
+
+        .panel_content {
+            button {
+                min-height: 10vh;
+                min-width: 20vw;
+            }
+        }
+    }
+}
+
+@viewport {
+    user-zoom: fixed;
+}
