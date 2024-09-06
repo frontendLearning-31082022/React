@@ -87,7 +87,10 @@ export default class StorageBlock extends Component {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(fields)
       }).then(res => {
-        if (res.ok) alert("Добавлено");
+        if (res.ok) {
+          alert("Добавлено");
+          document.location.reload();
+        }
       }).catch(x => {
         alert('Не добавилось ' + x.text);
       });
@@ -149,11 +152,11 @@ export default class StorageBlock extends Component {
   }
 
   findItem() {
-    const key='finded';
-    this.state.boxes.forEach(x=>delete x[key]);
+    const key = 'finded';
+    this.state.boxes.forEach(x => delete x[key]);
 
-    const word=this.state.findItem_word.toLowerCase();
-    if(word!=''){
+    const word = this.state.findItem_word.toLowerCase();
+    if (word != '') {
       const finded = this.state.boxes.filter(x => x.name.toLowerCase().indexOf(word) > -1);
       finded.forEach(x => x[key] = '');
     }

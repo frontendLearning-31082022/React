@@ -6,25 +6,48 @@ body {
     min-width: 1263px;
 }
 
-.finder_header {
-    width: 100%;
-    height: 40px;
-    display: flex;
 
-    input {
-        width: 100%;
-        height: inherit;
-    }
+header {
+    position: fixed;
+    top: 0px;
+    z-index: 100;
+    width: 100vw;
+    background: #afafaf;
+    padding: 3px;
+    color: white;
+    height: $header_height;
+    padding-top: 20px;
 
-    button {
-        width: 14%;
-        height: inherit;
-    }
+    .finder_header {
+        width: 97%;
+        height: 40px;
+        display: flex;
 
-    & * {
-        height: 100%;
+        input {
+            width: 100%;
+            height: inherit;
+        }
+
+        button {
+            width: 14%;
+            height: inherit;
+
+           
+        }
+
+        button.find  {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        & * {
+            height: 100%;
+        }
     }
 }
+
+
 
 div[finded] {
     background: darkseagreen;
@@ -150,16 +173,7 @@ div[finded] {
     display: flex;
 }
 
-header {
-    position: fixed;
-    top: 0px;
-    z-index: 100;
-    width: 100vw;
-    background: #afafaf;
-    padding: 3px;
-    color: white;
-    height: $header_height;
-}
+
 
 main {
     margin-top: $header_height;
@@ -178,7 +192,7 @@ main {
 
 .panel_quick {
     .show_btn {
-        width: 20vw;
+        width: 40px;
         aspect-ratio: 1/1;
     }
 
@@ -188,10 +202,11 @@ main {
 
         display: flex;
         flex-direction: column;
+        align-items: center;
 
         button {
             user-select: none;
-            min-width: 30vw;
+            min-width: 10vw;
             min-height: 40px;
         }
 

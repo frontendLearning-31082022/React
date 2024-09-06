@@ -29,8 +29,12 @@ export default function ContextMenu(props) {
             y = e.changedTouches[0].clientY;
         }
 
-        x = x - refRoot.current.offsetWidth;
-        y = y - refRoot.current.offsetHeight;
+        const x_menu_To_leftUp = x - refRoot.current.offsetWidth;
+        const y_menu_To_leftUp = y - refRoot.current.offsetHeight;
+        x=x_menu_To_leftUp;
+        y=y_menu_To_leftUp;
+
+        x=x<0?0:x;
 
         if (refRoot.current?.contains(e.target)) return;
 
