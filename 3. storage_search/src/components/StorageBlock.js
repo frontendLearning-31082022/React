@@ -12,7 +12,7 @@ export default class StorageBlock extends Component {
 
     this.state = {
       add_show: false, add_show_type: null, sumbit_add: () => { }, current_cell: "",
-      boxes: [], layer_current: -1
+      boxes: [], layer_current: -1, findItem_word: ""
     };
 
     this.scale = 5;
@@ -31,6 +31,7 @@ export default class StorageBlock extends Component {
     this.modifyObjs = this.modifyObjs.bind(this);
     this.z_index = this.z_index.bind(this);
     this.switchShowedLayer = this.switchShowedLayer.bind(this);
+    this.findItem = this.findItem.bind(this);
 
     this.ip = process.env.REACT_APP_IP_SERVER;
   }
@@ -147,6 +148,18 @@ export default class StorageBlock extends Component {
 
   }
 
+  findItem() {
+    const key='finded';
+    this.state.boxes.forEach(x=>delete x[key]);
+
+    const word=this.state.findItem_word.toLowerCase();
+    if(word!=''){
+      const finded = this.state.boxes.filter(x => x.name.toLowerCase().indexOf(word) > -1);
+      finded.forEach(x => x[key] = '');
+    }
+    this.forceUpdate();
+  }
+
   z_index(up, id) {
     let index = this.state.boxes.findIndex(x => x.id == id);
     const el = this.state.boxes[index];
@@ -241,8 +254,9 @@ export default class StorageBlock extends Component {
 
         <header>
           <div className='finder_header'>
-            <input type="text"></input>
-            <button className='find button-74'>Найти</button>
+            <input type="text" value={this.state.findItem_word} onKeyDown={(e) => { if (e.keyCode == 13) this.findItem() }}
+              onChange={(e) => { this.setState({ findItem_word: e.target.value }); }}></input>
+            <button className='find button-74' onClick={this.findItem} >Найти</button>
           </div>
           <div className='header_info'>
           </div>

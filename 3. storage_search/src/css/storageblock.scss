@@ -26,6 +26,13 @@ body {
     }
 }
 
+div[finded] {
+    background: darkseagreen;
+    padding: 8px;
+    min-width: fit-content !important;
+    border: dashed !important;
+}
+
 .scale {
     // scale: 0.2;
     // transform-origin: top left;
