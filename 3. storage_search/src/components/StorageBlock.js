@@ -98,6 +98,11 @@ export default class StorageBlock extends Component {
     this.setState({ sumbit_add: addFn });
   }
   async modifyObjs(objs) {
+    const clearLocalFields=(obj)=>{
+      delete obj['finded'];
+    }
+    objs.forEach(clearLocalFields);
+
     const postModify = async (obj) => {
       const url = this.ip + 'storage_block/boxes/modifyItem';
 
