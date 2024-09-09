@@ -56,9 +56,13 @@ export default class StorageBlock extends Component {
 
             const ctx = this;
             const updFN = (el,val) => {
-              el.x = val.x;
-              el.y = val.y;
+              const id=el.getAttribute('id');
+              
               const cur = ctx.state.boxes;
+              const reactEl=cur.filter(x=>x.id==id)[0];
+              reactEl.x = val.x;
+              reactEl.y = val.y;
+
               ctx.setState({ boxes: cur });
             };
 
