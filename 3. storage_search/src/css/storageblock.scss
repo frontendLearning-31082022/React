@@ -1,4 +1,4 @@
-$header_height: 57px;
+$header_height: 80px;
 
 @import "templales.css";
 
@@ -13,15 +13,20 @@ header {
     z-index: 100;
     width: 100vw;
     background: #afafaf;
-    padding: 3px;
+    // padding: 3px;
     color: white;
     height: $header_height;
-    padding-top: 20px;
+    // padding-top: 20px;
+
+    display: flex;
+    align-items: center;
 
     .finder_header {
         width: 97%;
         height: 40px;
         display: flex;
+        padding-left: 3px;
+
 
         input {
             width: 100%;
@@ -176,7 +181,7 @@ div[finded] {
 
 
 main {
-    margin-top: $header_height;
+    margin-top: $header_height+5px;
 }
 
 .contextmenu_content {
