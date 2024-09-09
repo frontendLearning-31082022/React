@@ -126,15 +126,15 @@ export default function InputObject(props) {
         </div>
     );
 
-    const renderAddItem = <div className="add_item_window">
-        Name <input field="name" className="add_new_window_arg" ></input>
-        Cell name <input field="cell_name" className="add_new_window_arg" value={inputsData['cell_name']}></input>
-        isItem <input field="isItem" className="add_new_window_arg" value="true"></input>
-        w <input field="w" className="add_new_window_arg"></input>
-        h <input field="h" className="add_new_window_arg"></input>
-        d <input field="d" className="add_new_window_arg"></input>
+    const renderAddItem = <>
+        <div> Name <input field="name" className="add_new_window_arg" ></input></div>
+        <div> Cell name <input field="cell_name" className="add_new_window_arg" value={inputsData['cell_name']}></input></div>
+        <div> isItem <input field="isItem" className="add_new_window_arg" value="true"></input></div >
+        <div> w < input field="w" className="add_new_window_arg" ></input ></div >
+        <div> h < input field="h" className="add_new_window_arg" ></input ></div >
+        <div>d < input field="d" className="add_new_window_arg" ></input > </div >
 
-    </div>
+    </>
 
     return (
         <div style={{ visibility: (props.show ? "initial" : "hidden") }} className="inputObject">
