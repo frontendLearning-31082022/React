@@ -255,6 +255,7 @@ export default class StorageBlock extends Component {
         }>
         </PanelQuick>
 
+        <div className='modal'>
         <header>
           <div className='finder_header'>
             <input type="text" value={this.state.findItem_word} onKeyDown={(e) => { if (e.keyCode == 13) this.findItem() }}
@@ -263,10 +264,11 @@ export default class StorageBlock extends Component {
           </div>
           <div className='header_info'>
           </div>
+        </header>
 
           <InputObject show={this.state.add_show} onClose={this.switchWindow} submit={this.state.sumbit_add}
             current_cell={this.state.current_cell} type={this.state.add_show_type} ></InputObject>
-        </header>
+        </div>
 
         <main>
           <div className='cells_data'>

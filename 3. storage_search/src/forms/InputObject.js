@@ -41,13 +41,37 @@ export default function InputObject(props) {
     }
 
     const style = `.content_add {
-        width: 90vw;
+        width: fit-content;
         margin-left: 5%;
-        position: absolute;
         top: 0px;
         background: gray;
         min-height: 300px;
         padding: 20px;
+        margin: 0 auto;
+        margin-top: 20px;   
+        position: relative;
+        display: flex;
+        flex-direction: column;     
+        }   
+
+        .content_add > * {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .inputObject_addItem{
+                width: fit-content;
+                align-self: end;
+
+                background: transparent;
+                margin-top: 20px;
+                padding: 7px;
+        }
+
+        .inputObject_title {
+            font-weight: 900;
+            margin-bottom: 15px;
         }   
 
         button.close_add {
@@ -56,7 +80,6 @@ export default function InputObject(props) {
             height: 50px;
             width: 50px;
             top: 0px;
-            background: #b32727;
             border: none;
         } 
         .add_item_window {
@@ -67,6 +90,33 @@ export default function InputObject(props) {
         .add_item_window input {
             width:fit-content;
         }
+
+        .close {
+            position: absolute;
+            right: 7px;
+            top: 7px;
+            width: 32px;
+            height: 32px;
+            opacity: 0.3;
+        }
+            .close:hover {
+            opacity: 1;
+        }
+            .close:before, .close:after {
+            position: absolute;
+            left: 15px;
+            content: ' ';
+            height: 33px;
+            width: 2px;
+            background-color: #333;
+        }
+            .close:before {
+            transform: rotate(45deg);
+        }
+            .close:after {
+            transform: rotate(-45deg);
+        }
+
         `;
 
     const renderAddBox = [...fields].map((t, i) =>
@@ -87,18 +137,18 @@ export default function InputObject(props) {
     </div>
 
     return (
-        <div style={{ visibility: (props.show ? "initial" : "hidden") }}>
+        <div style={{ visibility: (props.show ? "initial" : "hidden") }} className="inputObject">
             <style>{style}</style>
 
             <div className='content_add'>
-                <button className='close_add' onClick={props.onClose} ></button>
+                <div className='close_add close' onClick={props.onClose} ></div>
 
-                Введите новый объект
+                <div className="inputObject_title">Введите новый объект</div>
 
                 {(props.type == 'addItem') ? renderAddItem : ''}
                 {(props.type == 'addBox') ? renderAddBox : ''}
 
-                <button onClick={() => { submit(props.submit) }}>добавить</button>
+                <button onClick={() => { submit(props.submit) }} className="inputObject_addItem">добавить</button>
 
             </div>
         </div >
