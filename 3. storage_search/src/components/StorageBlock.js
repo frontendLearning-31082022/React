@@ -55,10 +55,10 @@ export default class StorageBlock extends Component {
             // this.upFN({ y: (el.offsetTop + y), x: (el.offsetLeft + x) });
 
             const ctx = this;
-            const updFN = (val) => {
+            const updFN = (el,val) => {
+              el.x = val.x;
+              el.y = val.y;
               const cur = ctx.state.boxes;
-              cur[i].x = val.x;
-              cur[i].y = val.y;
               ctx.setState({ boxes: cur });
             };
 

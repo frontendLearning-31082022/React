@@ -16,6 +16,8 @@ function submit(outsideFN) {
     outsideFN(obj);
 }
 
+const content_add_StyleDisplay = "flex";
+
 export default function InputObject(props) {
 
 
@@ -50,7 +52,7 @@ export default function InputObject(props) {
         margin: 0 auto;
         margin-top: 20px;   
         position: relative;
-        display: flex;
+        display: ${content_add_StyleDisplay};
         flex-direction: column;     
         }   
 
@@ -119,25 +121,30 @@ export default function InputObject(props) {
 
         `;
 
+    const onEnterAdd = (e) => {
+        if (e.keyCode == 13) submit(props.submit);
+    }
+
+
     const renderAddBox = [...fields].map((t, i) =>
         <div className={t}>
             {t} <input field={t} className={'add_new_window_arg'} value={inputsData[t]}
-                onChange={input} ></input>
+                onChange={input} onKeyDown={onEnterAdd}></input>
         </div>
     );
 
     const renderAddItem = <>
-        <div> Name <input field="name" className="add_new_window_arg" ></input></div>
-        <div> Cell name <input field="cell_name" className="add_new_window_arg" value={inputsData['cell_name']}></input></div>
-        <div> isItem <input field="isItem" className="add_new_window_arg" value="true"></input></div >
-        <div> w < input field="w" className="add_new_window_arg" ></input ></div >
-        <div> h < input field="h" className="add_new_window_arg" ></input ></div >
-        <div>d < input field="d" className="add_new_window_arg" ></input > </div >
+        <div> Name <input field="name" className="add_new_window_arg" onKeyDown={onEnterAdd}></input></div>
+        <div> Cell name <input field="cell_name" className="add_new_window_arg" value={inputsData['cell_name']} onKeyDown={onEnterAdd}></input></div>
+        <div> isItem <input field="isItem" className="add_new_window_arg" value="true" onKeyDown={onEnterAdd}></input></div >
+        <div> w < input field="w" className="add_new_window_arg" onKeyDown={onEnterAdd}></input ></div >
+        <div> h < input field="h" className="add_new_window_arg" onKeyDown={onEnterAdd}></input ></div >
+        <div>d < input field="d" className="add_new_window_arg" onKeyDown={onEnterAdd}></input > </div >
 
     </>
 
     return (
-        <div style={{ visibility: (props.show ? "initial" : "hidden") }} className="inputObject">
+        <div style={{ display: (props.show ? content_add_StyleDisplay : "none") }} className="inputObject">
             <style>{style}</style>
 
             <div className='content_add'>

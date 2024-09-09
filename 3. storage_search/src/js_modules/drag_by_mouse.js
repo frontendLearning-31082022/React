@@ -70,6 +70,6 @@ export default class DragByMouse {
 
         el.style.top = (el.offsetTop + y) + "px";
         el.style.left = (el.offsetLeft + x) + "px";
-        this.upFN({y:(el.offsetTop + y),x:(el.offsetLeft + x)  });
+        this.upFN(el,{y:(el.offsetTop + y),x:(el.offsetLeft + x)  });
     }
 }
