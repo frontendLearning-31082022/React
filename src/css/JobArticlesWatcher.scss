@@ -1,0 +1,86 @@
+td.field_URL {
+    overflow: hidden;
+    max-width: 40px;
+    text-wrap: nowrap;
+}
+.mark_button{
+    all: unset;
+    padding: 5px;
+}
+td {
+    font-weight: 600;
+}
+.wordslist_exclude_entry{
+    display: flex;
+    gap: 20px;
+    .excep_word_pos{
+        max-width: 20px;
+    }
+}
+
+.rating_word {
+    background-color: #656565;
+    color: white;
+}
+
+.actual_date {
+    font-weight: bolder;
+    background: #a18800;
+}
+
+.buttons_control{
+    font-size: 40px;
+}
+a:visited {
+    color: chartreuse;
+}
+
+[rating="10"]{
+    background-color: rgb(57, 155, 0);
+}
+[rating="9"]{
+    background-color: rgb(164, 226, 128);
+}
+[rating="8"]{
+    background-color: rgb(13, 91, 194);
+    color: white;
+}
+// [rating="8"] td.field_URL {
+//     background: #a7bf95;
+// }
+[rating="7"]{
+    background-color: rgb(185, 9, 162);
+}
+[rating="6"]{
+    background-color: rgb(229, 151, 236);
+}
+
+[rating="5"]{
+    background-color: rgb(139, 198, 238);
+}
+
+[rating="4"]{
+    background-color: orange;
+}
+[rating="3"]{
+    background-color: rgb(116, 82, 21);
+}
+[rating="2"]{
+    background-color: rgb(255, 39, 68);
+}
+[rating="1"]{
+    background-color: rgb(177, 22, 43);
+}
+[rating="0"]{
+    background-color: rgb(126, 2, 19);
+    color: white;
+}
+
+[opit="Опыт 3-6 лет"] {
+    background-color: black;
+    color: white;
+}
+[opit="Опыт более 6 лет"] {
+    background-color: black;
+    color: white;
+}
