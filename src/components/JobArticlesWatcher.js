@@ -186,10 +186,6 @@ export default class JobArticlesWatcher extends Component {
                 const replaceMask = "<span class='rating_word'>" + wordMark + "</span>";
 
                 const result = html.replace(regEx, replaceMask);
-                return <span dangerouslySetInnerHTML={{__html: result}}></span>;
-            }else if(colName=='date'){
-                if(new Date().getTime()- new Date(html).getTime()>(6*60*60*1000))return html;
-                return <span dangerouslySetInnerHTML={{ __html: result }}></span>;
                 return <span dangerouslySetInnerHTML={{ __html: result }}></span>;
             } else if (colName == 'date') {
                 const leftTime = new Date().getTime() - new Date(html).getTime();

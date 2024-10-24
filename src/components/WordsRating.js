@@ -9,8 +9,6 @@ export default class WordsRating extends Component {
         this.insertArrayOnIndex = this.insertArrayOnIndex.bind(this);
         this.recognizeWordOfRating = this.recognizeWordOfRating.bind(this);
         this.recognizeWordOfRatingAlert = this.recognizeWordOfRatingAlert.bind(this);
-        this.saveNewWord = this.saveNewWord.bind(this);
-        this.state = { excep_words: [], positions: [] };
         this.saveNewList = this.saveNewList.bind(this);
 
         this.wordsLoaded_resolve = [];
@@ -18,6 +16,11 @@ export default class WordsRating extends Component {
         this.waitWordsLoad = new Promise(function (resolve, reject) {
             rContext.wordsLoaded_resolve.push({ resolve: resolve, reject: reject });
         });
+
+        this.state = {
+            excep_words: [], positions: [], listsExcep: [], modalFn_ChooseListExclude: () => { }
+            , hidedElements: new Set(['modalFn_ChooseListExclude'])
+        };
 
 
     }
@@ -82,22 +85,26 @@ export default class WordsRating extends Component {
         this.setState({ hidedElements: this.state.hidedElements });
     }
 
-    async saveNewWord() {
-        const url = `${this.props.ip}job/articles/excludeWords/saveNewList/`;
+    async saveNewList() {
 
-        const resp = await fetch(url, {
-            method: "POST",
-            body: JSON.stringify({
-                list: this.state.excep_words
-            })
-        });
+        for (let index = 0; index < this.state.listsExcep.length; index++) {
+            const nameList = this.state.listsExcep[index];
+            const url = `${this.props.ip}job/articles/excludeWords/saveList/${nameList}/`;
 
-        if (!resp.ok) {
-            alert("Не удалось поменять в бд. " + resp.statusText);
-            return;
+            const resp = await fetch(url, {
+                method: "POST",
+                body: JSON.stringify({
+                    list: this.state.excep_words.filter(x => x["listName"] == nameList)
+                })
+            });
+
+            if (!resp.ok) {
+                alert("Не удалось поменять в бд. " + resp.statusText);
+                return;
+            }
         }
 
-        alert("Новый список сохранен");
+        alert("Cписоки сохранены");
     }
 
     recognizeWordOfRating(word) {
@@ -184,7 +191,6 @@ export default class WordsRating extends Component {
         return (
             <div>
 
-                <div className='wordslist_exclude' style={{ visibility: (this.props.showWordsList) ? 'hidden':'initial'  }}>
                 <div className='modal_windows' >
                     <div className='choose_list_exclude modal_window' style={{
                         visibility: this.state.hidedElements.has('modalFn_ChooseListExclude')
@@ -195,10 +201,12 @@ export default class WordsRating extends Component {
                         })}
                     </div>
                 </div>
+
+                <div className='wordslist_exclude' style={{ visibility: (this.props.showWordsList) ? 'hidden' : 'initial' }}>
                     {this.state.excep_words.map((x, i) => {
                         const objByOrder = x;
 
-                        return <div className='wordslist_exclude_entry'>
+                        return <div className={`wordslist_exclude_entry ${objByOrder['listName'].replaceAll(/\d+_/g, "")}`}>
                             <input className='excep_word_pos' key={i} value={this.state.positions[i]}
                                 onKeyDown={(e) => {
                                     if (e.keyCode == 13) {
@@ -210,12 +218,22 @@ export default class WordsRating extends Component {
                                 }} />
                             <div className='matchVal'> {objByOrder["matchVal"]} </div>
                             <div className='rating_val'> {objByOrder['rating']} </div>
+                            <div className='listRatingName'> {objByOrder['listName']} </div>
+                            {this.state.listsExcep.map((x, i) => {
+                                if (x != objByOrder['listName']) return <button onClick={() => {
+
+                                    const atBase = this.state.excep_words.filter(x => x.matchVal == objByOrder["matchVal"])[0];
+                                    atBase['listName'] = this.state.listsExcep[i];
+                                    this.setState({ excep_words: this.state.excep_words });
+                                }}>{i}</button>;
+                            })}
+
                         </div>
 
 
 
                     })}
-                    <button onClick={this.saveNewWord} >Сохранить новый список</button>
+                    <button onClick={this.saveNewList}>Сохранить списки</button>
                 </div>
 
             </div>
@@ -224,21 +242,3 @@ export default class WordsRating extends Component {
 
 
 }
-
-// function Card({ isDragging, text }) {
-//     const [{ opacity }, dragRef] = useDrag(
-//         () => ({
-//             type: 'CARD',
-//             item: { text },
-//             collect: (monitor) => ({
-//                 opacity: monitor.isDragging() ? 0.5 : 1
-//             })
-//         }),
-//         []
-//     )
-//     return (
-//         <div ref={dragRef} style={{ opacity }}>
-//             {text}
-//         </div>
-//     )
-// }
