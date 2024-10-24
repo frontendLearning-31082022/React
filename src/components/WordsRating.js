@@ -11,6 +11,14 @@ export default class WordsRating extends Component {
         this.recognizeWordOfRatingAlert = this.recognizeWordOfRatingAlert.bind(this);
         this.saveNewWord = this.saveNewWord.bind(this);
         this.state = { excep_words: [], positions: [] };
+        this.saveNewList = this.saveNewList.bind(this);
+
+        this.wordsLoaded_resolve = [];
+        const rContext = this;
+        this.waitWordsLoad = new Promise(function (resolve, reject) {
+            rContext.wordsLoaded_resolve.push({ resolve: resolve, reject: reject });
+        });
+
 
     }
 
@@ -25,7 +33,10 @@ export default class WordsRating extends Component {
 
 
     componentDidMount() {
-        if (this.props.recognizeWordOfRating_getFunc)this.props.recognizeWordOfRating_getFunc(this.recognizeWordOfRating);
+        if (this.props.recognizeWordOfRating_getFunc) {
+            this.waitWordsLoad.then(x => {
+                this.props.recognizeWordOfRating_getFunc(this.recognizeWordOfRating); });
+        }
     }
 
 

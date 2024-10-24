@@ -7,8 +7,6 @@ const MARKED = 'marked';
 
 export default class JobArticlesWatcher extends Component {
 
-
-
     constructor(props) {
         super(props);
         this.loadArticlesPart = this.loadArticlesPart.bind(this);
@@ -19,7 +17,7 @@ export default class JobArticlesWatcher extends Component {
         this.router = this.router.bind(this);
 
         this.ip = process.env.REACT_APP_API_SERVER_IP;
-        this.detectRatingWord = null;
+        this.detectRatingWord = ()=>{};
 
         this.router();
 
@@ -28,7 +26,7 @@ export default class JobArticlesWatcher extends Component {
             titles: ["URL", "name", "company", "date", "price", "opit", "info", "dateFindedAgain", "dateAddToDB", "rating", "ReqName"],
             hidedElements: { marked: true, WordsRating: true },
             ratingInputVal: null,
-            recognizeWordOfRating: null
+            recognizeWordOfRating: null,
             countNotWatchedArticles: -1,
             currentPageReq:''
         };
@@ -192,6 +190,14 @@ export default class JobArticlesWatcher extends Component {
             }else if(colName=='date'){
                 if(new Date().getTime()- new Date(html).getTime()>(6*60*60*1000))return html;
                 return <span dangerouslySetInnerHTML={{ __html: result }}></span>;
+                return <span dangerouslySetInnerHTML={{ __html: result }}></span>;
+            } else if (colName == 'date') {
+                const leftTime = new Date().getTime() - new Date(html).getTime();
+                const daysLeft = Math.round(leftTime / 1000 / 60 / 60 / 24);
+
+                if (leftTime > (6 * 60 * 60 * 1000)) {
+                    return <span>{html}<span className='days_left'> {daysLeft}дн</span></span>;
+                }
                 return <span className='actual_date'>{html}</span>
             }
 
@@ -246,6 +252,13 @@ export default class JobArticlesWatcher extends Component {
         return (
             <div>
 
+                <div className='info_top'>
+                    <div className='count_notWatchedYet'>Статей {this.state.countNotWatchedArticles}</div>
+                    <a href="/" className={(this.state.currentPageReq=='Главная'?'currentPageReq':'')}>Главная</a>
+                    <a onClick={() => { window.location.search = "?today_appeal_atDB" }} className={(this.state.currentPageReq=='Сегодня появились в БД'?'currentPageReq':'')}>Сегодня появились в БД</a>
+                    <a onClick={() => { window.location.search = "?today_dateFindedAgain" }} className={(this.state.currentPageReq=='Сегодня были вновь найдены'?'currentPageReq':'')}>Сегодня были вновь найдены</a>
+                </div>
+
                 <div className='not_readed articles'>
                     <table>
                         <tr>{this.state.titles.map(y => <th>{y}</th>)}</tr>
@@ -284,7 +297,7 @@ export default class JobArticlesWatcher extends Component {
 
                 <WordsRating ratingInputVal={this.state.ratingInputVal} onChangeRatingInputVal={(e) => { this.setState({ ratingInputVal: e }) }} ip={this.ip} showWordsList={this.state.hidedElements['WordsRating']} recognizeWordOfRating={this.state.recognizeWordOfRating}
                     onChangeRecognizeWordOfRating={(val) => { this.setState({ recognizeWordOfRating: val }) }}
-                    recognizeWordOfRating_getFunc={(fn) => { this.detectRatingWord = fn; }}
+                    recognizeWordOfRating_getFunc={(fn) => { this.detectRatingWord = fn;this.forceUpdate(); }}
                 ></WordsRating>
             </div >
         )
