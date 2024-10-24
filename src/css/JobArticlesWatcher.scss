@@ -31,6 +31,20 @@ td {
     }
 }
 
+//TODO доделать
+.modal_window {
+    top: 10px;
+    position: fixed;
+    z-index: 100;
+    margin: 0 auto;
+    display: flex;
+    width: 100%;
+    button {
+        font-size: x-large;
+    }
+}
+
+
 
 .listRatingName {
     color: #cfcdcd;

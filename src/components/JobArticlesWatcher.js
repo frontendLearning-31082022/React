@@ -14,6 +14,7 @@ export default class JobArticlesWatcher extends Component {
         this.loadArticlesPart = this.loadArticlesPart.bind(this);
         this.moveToGroup = this.moveToGroup.bind(this);
         this.setAllWatched = this.setAllWatched.bind(this);
+        this.loadCountNotYetWatched = this.loadCountNotYetWatched.bind(this);
         this.bindKeys = this.bindKeys.bind(this);
         this.router = this.router.bind(this);
 
@@ -24,10 +25,11 @@ export default class JobArticlesWatcher extends Component {
 
         this.state = {
             articles: [], sizePerPage: 20,
-            titles: ["URL", "name", "company", "date", "price", "opit", "info", "dateAddToDB", "rating", "ReqName"],
+            titles: ["URL", "name", "company", "date", "price", "opit", "info", "dateFindedAgain", "dateAddToDB", "rating", "ReqName"],
             hidedElements: { marked: true, WordsRating: true },
             ratingInputVal: null,
             recognizeWordOfRating: null
+            countNotWatchedArticles: -1,
             currentPageReq:''
         };
 
@@ -35,12 +37,18 @@ export default class JobArticlesWatcher extends Component {
 
     componentDidMount() {
         this.loadArticlesPart();
+        this.loadCountNotYetWatched();
         document.title = process.env.REACT_APP_API_TITLE_PAGE;
         this.bindKeys();
 
-
     }
 
+    loadCountNotYetWatched() {
+        const ip = this.ip;
+        fetch(this.url_countArticlesNotReadedYet).then((resp) => resp.text()).then(x => JSON.parse(x)).then(x => {
+            this.setState({ countNotWatchedArticles: x.count });
+        }).catch(x => console.log(x));
+    }
 
 
     async moveToGroup(id, from, to) {
@@ -165,24 +173,25 @@ export default class JobArticlesWatcher extends Component {
 
     render() {
 
-        const fmHTML = (html,colName) => {
+        const fmHTML = (html, colName) => {
 
-            if(html==null || colName==null)return html;
+            if (html == null || colName == null) return html;
 
-            if(colName=='name'){
+            if (colName == 'name') {
                 const ratingWord = this.detectRatingWord(html);
                 if (ratingWord == undefined) return html;
-    
+
                 const wordMark = html.toLocaleLowerCase().match(new RegExp(ratingWord.matchVal.toLocaleLowerCase()))[0];
-    
+
                 const searchMask = ratingWord.matchVal;
                 const regEx = new RegExp(searchMask, "ig");
-                const replaceMask ="<span class='rating_word'>"+ wordMark+"</span>";
-                
+                const replaceMask = "<span class='rating_word'>" + wordMark + "</span>";
+
                 const result = html.replace(regEx, replaceMask);
                 return <span dangerouslySetInnerHTML={{__html: result}}></span>;
             }else if(colName=='date'){
                 if(new Date().getTime()- new Date(html).getTime()>(6*60*60*1000))return html;
+                return <span dangerouslySetInnerHTML={{ __html: result }}></span>;
                 return <span className='actual_date'>{html}</span>
             }
 
@@ -209,6 +218,10 @@ export default class JobArticlesWatcher extends Component {
                         return <td className={'field_' + x} opit={objArt[x]} > {fmHTML(objArt[x], 'date')}</td>;
                     }
 
+                    if (x == 'dateFindedAgain') {
+                        const date = objArt[x];
+                        return <td className={'field_' + x} opit={date} > {fmHTML(date, 'date')}</td>;
+                    }
 
                     return <td className={'field_' + x} > {fmHTML(objArt[x])}</td>
                 })

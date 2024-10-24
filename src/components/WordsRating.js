@@ -30,30 +30,45 @@ export default class WordsRating extends Component {
 
 
     async addWordExlude() {
-        let val = prompt('Введите слово для исключенния?', this.props.ratingInputVal);
-        if (val === null) return;
-        const rating = prompt('Введите рейтинг', "1");
-        if (rating === null) return;
-        let askAdd = window.confirm('Подтвердить добавление? ' + val);
+        const text = this.props.ratingInputVal;
 
-        this.props.onChangeRatingInputVal(null);
-        if (!askAdd) return;
+        const handleClickNameListBtn = async (nameList) => {
+            let val = prompt('Введите слово для исключенния?', text);
+            if (val === null) return;
+            const rating = prompt('Введите рейтинг', "1");
+            if (rating === null) return;
+            let askAdd = window.confirm('Подтвердить добавление? ' + val);
 
-        const url = `${this.props.ip}job/articles/addExcludeWordVal/`;
-        const resp = await fetch(url, {
-            method: "POST",
-            body: JSON.stringify({
-                word: val,
-                rating: rating,
-            })
+            if (!askAdd) return;
 
-        });
-        if (!resp.ok) {
-            alert("Не удалось добавить " + resp.statusText);
-            return;
+            const url = `${this.props.ip}job/articles/addExcludeWordVal/${nameList}/`;
+            const resp = await fetch(url, {
+                method: "POST",
+                body: JSON.stringify({
+                    word: val,
+                    rating: rating,
+                })
+
+            });
+
+            this.setState({ modalFn_ChooseListExclude: () => { } });
+            this.state.hidedElements.add("modalFn_ChooseListExclude");
+            this.setState({ hidedElements: this.state.hidedElements });
+
+            if (!resp.ok) {
+                alert("Не удалось добавить " + resp.statusText);
+                return;
+            }
+            alert("Добавлено слово для рейтинга ");
+
+
         }
-        alert("Добавлено слово для рейтинга ");
-        // const res=await resp.body;
+        this.props.onChangeRatingInputVal(null);
+
+        this.setState({ modalFn_ChooseListExclude: handleClickNameListBtn });
+
+        this.state.hidedElements.delete("modalFn_ChooseListExclude");
+        this.setState({ hidedElements: this.state.hidedElements });
     }
 
     async saveNewWord() {
@@ -136,25 +151,15 @@ export default class WordsRating extends Component {
     onChangePosition(e, i) {
         this.state.positions[i] = e.target.value;
         this.setState({ positions: this.state.positions });
-        // const change=this.state.positions;
-        // change[i]=e.target.value;
-        // this.setState({positions:change});
     }
 
     insertArrayOnIndex(indexEl, indexNew, event) {
         let el = this.state.excep_words[indexEl];
-        // const b=[...document.getElementsByClassName('excep_word_pos')].filter(x=>x.value==el.rating)[0];
-        // b.blur();
+
 
         this.state.excep_words.splice(indexEl, 1);
         this.state.excep_words.splice(indexNew, 0, el);
 
-        //     // const f=[];
-        //     // f.push()
-
-        //     // el['order'] = indexNew;
-
-        // [...document.getElementsByClassName('excep_word_pos')].forEach(x=>x.blur());
         for (let index = 0; index < this.state.positions.length; index++) {
             this.state.positions[index] = index;
         }
@@ -165,22 +170,20 @@ export default class WordsRating extends Component {
 
     render() {
 
-        // const upState = (value, ...path) => {
-        //     let obj = this.state[path[0]];
-        //     path.splice(0,1); 
-        //     [...path].forEach(x => {
-        //         obj = obj[x]
-        //     }
-        //     );
-        //     debugger;
-        //     // this.state[stateObj][i]=value;
-        //     // this.setState({[stateObj]:this.state[stateObj]});
-        // }
-
         return (
             <div>
 
                 <div className='wordslist_exclude' style={{ visibility: (this.props.showWordsList) ? 'hidden':'initial'  }}>
+                <div className='modal_windows' >
+                    <div className='choose_list_exclude modal_window' style={{
+                        visibility: this.state.hidedElements.has('modalFn_ChooseListExclude')
+                            ? 'hidden' : 'initial'
+                    }}>
+                        {this.state.listsExcep.map((x, i) => {
+                            return <button onClick={() => { this.state.modalFn_ChooseListExclude(x); }}>{x}</button>
+                        })}
+                    </div>
+                </div>
                     {this.state.excep_words.map((x, i) => {
                         const objByOrder = x;
 
