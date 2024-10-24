@@ -15,9 +15,12 @@ export default class JobArticlesWatcher extends Component {
         this.moveToGroup = this.moveToGroup.bind(this);
         this.setAllWatched = this.setAllWatched.bind(this);
         this.bindKeys = this.bindKeys.bind(this);
+        this.router = this.router.bind(this);
 
         this.ip = process.env.REACT_APP_API_SERVER_IP;
         this.detectRatingWord = null;
+
+        this.router();
 
         this.state = {
             articles: [], sizePerPage: 20,
@@ -25,6 +28,7 @@ export default class JobArticlesWatcher extends Component {
             hidedElements: { marked: true, WordsRating: true },
             ratingInputVal: null,
             recognizeWordOfRating: null
+            currentPageReq:''
         };
 
     }
@@ -73,6 +77,33 @@ export default class JobArticlesWatcher extends Component {
         this.setState({ articles: this.state.articles });
     }
 
+    router() {
+
+        const router = document.location.href;
+
+        let currentPageReq='Главная';
+        currentPageReq=router.indexOf("today_appeal_atDB") > -1?'Сегодня появились в БД':currentPageReq;
+        currentPageReq=router.indexOf("today_dateFindedAgain") > -1?'Сегодня были вновь найдены':currentPageReq;
+        this.setState({currentPageReq:currentPageReq});
+
+        const ipPass = this.ip;
+        this.urlGetPart = (page, sizePer) => { return `${ipPass}job/articles/get/${page}/${sizePer}/` };
+        if (router.indexOf("today_appeal_atDB") > -1) this.urlGetPart = (page, sizePer) => { return `${ipPass}job/articles/get/${page}/${sizePer}/?today_appeal_atDB` };
+        if (router.indexOf("today_dateFindedAgain") > -1) this.urlGetPart = (page, sizePer) => { return `${ipPass}job/articles/get/${page}/${sizePer}/?today_dateFindedAgain` };
+
+        let req = null;
+        if (req == null) {
+            req = router.indexOf("today_appeal_atDB") > -1 ? "today_appeal_atDB" : req;
+            req = router.indexOf("today_dateFindedAgain") > -1 ? "today_dateFindedAgain" : req;
+        }
+        req = req == null ? "all_not_readed" : req;
+
+        this.url_countArticlesNotReadedYet = `${ipPass}job/articles/getNotYetReadedCount/?${req != null ? req : ''}`;
+
+
+        const b = 0;
+    }
+
     async setAllWatched() {
         const not_watched = this.state.articles.filter(x => x.status == null);
 
@@ -103,8 +134,7 @@ export default class JobArticlesWatcher extends Component {
 
     async loadArticlesPart() {
         const ip = this.ip;
-        const urlGet = (page, sizePer) => { return `${ip}job/articles/get/${page}/${sizePer}/` };
-        const url = urlGet(0, this.state.sizePerPage);
+        const url = this.urlGetPart(0, this.state.sizePerPage);
         const resp = await fetch(url);
         let text = await resp.json();
 
@@ -222,6 +252,9 @@ export default class JobArticlesWatcher extends Component {
                             {this.state.articles.filter(x => x.status == `group_${MARKED}`).map((x, i) => renderArticle(x, i))}
                         </table>
                     </div>
+                    <button onClick={() => {
+
+                    }}>Вновь обновленные просмотренные</button>
 
                     <button onClick={() => {
                         // upState(!this.state.hidedElements.WordsRating,"hidedElements","WordsRating");

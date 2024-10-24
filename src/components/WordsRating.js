@@ -75,7 +75,9 @@ export default class WordsRating extends Component {
     }
 
     recognizeWordOfRating(word) {
+
         let wordRating = null;
+
         for (let index = 0; index < this.state.excep_words.length; index++) {
             const element = this.state.excep_words[index];
 
@@ -90,6 +92,7 @@ export default class WordsRating extends Component {
                 return element;
             }
         }
+
     }
 
     recognizeWordOfRatingAlert(word) {
@@ -105,17 +108,28 @@ export default class WordsRating extends Component {
     async loadWords() {
         if (this.state.excep_words.length > 0) return;
 
-        const url = `${this.props.ip}job/articles/getExcludeWords/`;
-        const resp = await fetch(url);
-        if (!resp.ok) {
-            alert("Не удалось зашрузить ExcepWords " + resp.statusText);
-            return;
+        const listsNamesReq = await fetch(`${this.props.ip}job/articles/excludeWords/lists/getAll`);
+        let listsNames = await listsNamesReq.json();
+        this.setState({ listsExcep: listsNames });
+
+        let lists = [];
+        for (let index = 0; index < listsNames.length; index++) {
+            const nameFile = listsNames[index];
+            const url = `${this.props.ip}job/articles/getExcludeWords/${nameFile}/`;
+            const resp = await fetch(url);
+            if (!resp.ok) {
+                alert("Не удалось зашрузить ExcepWords " + resp.statusText);
+                return;
+            }
+            let listInput = await resp.json();
+            listInput = listInput.map(x => { x["listName"] = nameFile; return x; });
+            lists = [...lists, ...listInput];
         }
-        let ratingMatchVal = await resp.json();
-        this.setState({ positions: ratingMatchVal.map((x, i) => i) });
-        // ratingMatchVal = ratingMatchVal.map((x, i) => { x['order'] = i; return x; });
-        // [...ratingMatchVal].forEach((x, i) => this.state.excep_words[i] = x);
-        this.setState({ excep_words: ratingMatchVal });
+
+        this.setState({ positions: lists.map((x, i) => i) });
+        this.setState({ excep_words: lists });
+
+        this.wordsLoaded_resolve[0].resolve();
 
     }
 
