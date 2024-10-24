@@ -14,6 +14,7 @@ export default class JobArticlesWatcher extends Component {
         this.loadArticlesPart = this.loadArticlesPart.bind(this);
         this.moveToGroup = this.moveToGroup.bind(this);
         this.setAllWatched = this.setAllWatched.bind(this);
+        this.bindKeys = this.bindKeys.bind(this);
 
         this.ip = process.env.REACT_APP_API_SERVER_IP;
         this.detectRatingWord = null;
@@ -30,6 +31,8 @@ export default class JobArticlesWatcher extends Component {
 
     componentDidMount() {
         this.loadArticlesPart();
+        document.title = process.env.REACT_APP_API_TITLE_PAGE;
+        this.bindKeys();
 
 
     }
@@ -116,6 +119,20 @@ export default class JobArticlesWatcher extends Component {
 
 
 
+    bindKeys() {
+        const rectCntxt=this;
+
+        window.onkeyup = function (e) {
+            if (e.code === 'F8') {
+                rectCntxt.setAllWatched();
+            }
+            if (e.code === 'F9') {
+                rectCntxt.loadArticlesPart();
+            }
+
+        }
+    }
+
     render() {
 
         const fmHTML = (html,colName) => {
@@ -149,7 +166,7 @@ export default class JobArticlesWatcher extends Component {
                         <button onClick={() => { this.moveToGroup(objArt["URL"], "articles", objArt.status == 'group_' + MARKED ? null : MARKED) }} className='mark_button'>★</button> </td>
 
                     if (x == 'name') {
-                        return <td className={'field_' + x} > {fmHTML(objArt[x],'name')}
+                        return <td className={'field_' + x} > {fmHTML(objArt[x], 'name')}
                             <button onClick={() => { this.setState({ ratingInputVal: objArt[x] }) }}>₦</button>
                             {/* <button onClick={() => { this.setState({ recognizeWordOfRating: fmHTML(objArt[x]) }) }} title="Как опредилился рейтинг">🥉</button> */}
                         </td>
@@ -158,8 +175,8 @@ export default class JobArticlesWatcher extends Component {
                         return <td className={'field_' + x} opit={fmHTML(objArt[x])} > {fmHTML(objArt[x])}</td>;
                     }
 
-                    if(x=='dateAddToDB'){
-                        return <td className={'field_' + x} opit={objArt[x]} > {fmHTML(objArt[x],'date')}</td>;
+                    if (x == 'dateAddToDB') {
+                        return <td className={'field_' + x} opit={objArt[x]} > {fmHTML(objArt[x], 'date')}</td>;
                     }
 
 
@@ -211,14 +228,12 @@ export default class JobArticlesWatcher extends Component {
                         this.state.hidedElements.WordsRating = !this.state.hidedElements.WordsRating;
                         this.setState({ hidedElements: this.state.hidedElements });
                     }}>WordsRating</button>
-
-
                 </div>
 
                 <div className='control_buttons'>
                     <button onClick={this.loadArticlesPart} className='buttons_control' title='Загрузить еще статей'>🔄</button>
                     <button onClick={this.setAllWatched} className='buttons_control' title='Пометить все как прочитанные'>✅</button>
- 
+
                 </div>
 
                 <WordsRating ratingInputVal={this.state.ratingInputVal} onChangeRatingInputVal={(e) => { this.setState({ ratingInputVal: e }) }} ip={this.ip} showWordsList={this.state.hidedElements['WordsRating']} recognizeWordOfRating={this.state.recognizeWordOfRating}
