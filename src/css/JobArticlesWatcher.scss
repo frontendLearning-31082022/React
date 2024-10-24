@@ -1,0 +1,72 @@
+@import 'Ratings';
+@import 'ExcludeWords';
+
+
+td.field_URL {
+    overflow: hidden;
+    max-width: 40px;
+    text-wrap: nowrap;
+}
+.mark_button{
+    all: unset;
+    padding: 5px;
+}
+td {
+    font-weight: 600;
+}
+.wordslist_exclude_entry{
+    display: flex;
+    gap: 20px;
+    .excep_word_pos{
+        max-width: 20px;
+    }
+}
+
+.info_top{
+    display: flex;
+    gap:20px;
+
+    .currentPageReq{
+        background-color: #a18800;
+    }
+}
+
+//TODO доделать
+.modal_window {
+    top: 10px;
+    position: fixed;
+    z-index: 100;
+    margin: 0 auto;
+    display: flex;
+    width: 100%;
+    button {
+        font-size: x-large;
+    }
+}
+
+
+
+.listRatingName {
+    color: #cfcdcd;
+}
+
+.rating_word {
+    background-color: #656565;
+    color: white;
+}
+
+.actual_date {
+    font-weight: bolder;
+    background: #a18800;
+}
+
+.buttons_control{
+    font-size: 40px;
+}
+a:visited {
+    color: chartreuse;
+}
+
+.days_left{
+    color: red;
+}
