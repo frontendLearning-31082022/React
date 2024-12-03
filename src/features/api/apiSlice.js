@@ -5,21 +5,18 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 //     // debugger;
 //     return {data: {} };
 // }
-
-export const apiSlice = createApi({
-    reducerPath: "api",
+  export const wordsApi = createApi({
+    reducerPath: "missionsApi",
     baseQuery: fetchBaseQuery({
-      baseUrl: "http://192.168.1.45:8079/english/words/getNotLearned"
+      baseUrl: process.env.REACT_APP_API,
+      mode: "cors"
     }),
     endpoints: (builder) => ({
-        popo: builder.query({
-        query: () => "/"
-      })
+      words: builder.query({
+        // query: () =>  process.env.REACT_APP_Words_getNoLearned,
+        query: ({offset}) =>  process.env.REACT_APP_Words_getNoLearned+`?offset=${offset}`,
+      }),
     })
   });
   
-  export const { usePopoQuery } = apiSlice;
-  
-
-
-// http://192.168.1.45:8079/english/words/getNotLearned
+  export const { useWordsQuery } = wordsApi;

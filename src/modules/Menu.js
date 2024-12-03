@@ -6,7 +6,9 @@ export default function Menu() {
     <div>Menu
 
         <WordsList></WordsList>
-        {/* <WordsList></WordsList> */}
+        <WordsList></WordsList>
+        <WordsList></WordsList>
+        <WordsList></WordsList>
 
     </div>
   )

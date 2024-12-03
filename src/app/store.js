@@ -1,5 +1,5 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit"
-import { apiSlice } from "./../features/api/apiSlice"
+import { wordsApi } from "./../features/api/apiSlice"
 
 // const counterSlice = createSlice({
 //     name: 'n'
@@ -17,12 +17,10 @@ import { apiSlice } from "./../features/api/apiSlice"
 
 // })
 
-
 export const store = configureStore({
-    reducer: {
-      [apiSlice.reducerPath]: apiSlice.reducer
-    },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(apiSlice.middleware)
-  });
-  
+  reducer: {
+    [wordsApi.reducerPath]: wordsApi.reducer
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(wordsApi.middleware)
+});
