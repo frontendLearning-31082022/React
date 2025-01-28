@@ -1,7 +1,12 @@
+// @ts-ignore
 import React, { useEffect, useState } from 'react'
 
+// @ts-ignore
 import { useWordsQuery, useCompleteWordStatusQuery, wordsApi } from 'features/api/apiSlice';
 import "./../../css/Word_translate.scss"
+import { useDispatch } from 'react-redux';
+import {increment} from '../../app/store';
+import {store} from '../../app/store';
 
 export default function Word_translate() {
   const [currentWord, setCurrentWord] = useState(null);
@@ -31,9 +36,10 @@ export default function Word_translate() {
   }
 
   const checkAnswer = () => {
-    const answerVal = document.getElementById("answer").textContent;
-    const wrong = answerVal != currentWord.WordAtRus;
+    const answerVal = document.getElementById("answer").value;
+    const wrong = answerVal != currentWord.word_rus;
 
+    debugger;
   }
 
   useEffect(() => {
@@ -53,8 +59,10 @@ export default function Word_translate() {
             <div className="WordAtRus card card-hided">{currentWord.word_rus}</div>
           </div>
           <div className='answer_panel'>
-            <input id='answer'></input>
-            <button>Проверить</button>
+            <input id='answer' onKeyDown={(e)=>{ if(e.keyCode == 13)checkAnswer()} }  
+// @ts-ignore
+            autocomplete="off"/>
+            <button onClick={checkAnswer} >Проверить</button>
           </div>
         </div>
 
