@@ -1,0 +1,14 @@
+.word {
+    display: flex;
+    gap: 20px;
+
+    .word__rus {
+        background: #cadbdf;
+    }
+    .word__eng {
+        background: #dbec78;
+    }
+    .word__meaning {
+        background: #f5af53;
+    }
+}
