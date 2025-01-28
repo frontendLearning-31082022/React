@@ -38,6 +38,7 @@ export default function Word_translate() {
 
   useEffect(() => {
     saveWordsToLocal();
+    store.dispatch(increment());
   }, [data]);
 
   return (
