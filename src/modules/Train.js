@@ -15,22 +15,6 @@ export default function Train({ basePath }) {
         <Link to={process.env.REACT_APP_URL_Training_wordTranslate}>Слово-Перевод</Link>
       </nav>
 
-
-      {(isSuccess) ?
-        data?.map((d) => {
-          // debugger;
-          return (
-            <div className='word'>
-              <div className="word__rus">{d.word_rus}</div>
-              <div className="word__eng">{d.word_eng}</div>
-              <div className="word__meaning">{d.meaning}</div>
-            </div>
-          );
-        })
-        : "Loading..."}
-
-      OKK
-
     </div>
   )
 }
