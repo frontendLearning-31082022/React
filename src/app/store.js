@@ -1,4 +1,4 @@
-import { combineReducers, configureStore, createSlice } from "@reduxjs/toolkit"
+import { combineReducers, configureStore, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { wordsApi } from "./../features/api/apiSlice"
 // import counterReducer from "./../store/slices/wordsProgressSlice";
 // import { increment } from "./../store/slices/wordsProgressSlice";
@@ -25,10 +25,9 @@ const counterSlice = createSlice({
   name: 'counter',
   initialState,
   reducers: {
-    increment(state,{payload}) {
+    increment(state, { payload }) {
       state.value++
       console.log(payload);
-      debugger;
     },
     decrement(state) {
       state.value--
@@ -41,6 +40,18 @@ const counterSlice = createSlice({
 
 export const { increment, decrement, incrementByAmount } = counterSlice.actions
 
+export const postWordCheckResult = createAsyncThunk(
+  'wordLearnResult',
+  async (params, thunkAPI) => {
+    const response = fetch(process.env.REACT_APP_API + process.env.REACT_APP_URL_patchWordLearnStatus + `?idWord=${params.id}&wrong=${params.wrong}`,{
+      mode: "cors",
+      method: "PATCH"
+    });
+    return response.data;
+  }
+
+)
+
 
 // // [wordsApi.reducerPath]: wordsApi.reducer,
 // // [counterReducer.reducerPath]: counterReducer,
@@ -52,8 +63,18 @@ export const { increment, decrement, incrementByAmount } = counterSlice.actions
 export const store = configureStore({
   reducer: {
     [wordsApi.reducerPath]: wordsApi.reducer,
-    wordsProgressSlice:counterSlice
+    wordsProgressSlice: counterSlice
   },
+
+  // extraReducers: (builder) => {
+  //   // Add reducers for additional action types here, and handle loading state as needed
+  //   builder.addCase(postWordCheckResult.fulfilled, (state, action) => {
+  //     // Add user to the state array
+  //     state.entities.push(action.payload)
+  //   })
+  // },
+
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(wordsApi.middleware)
 });

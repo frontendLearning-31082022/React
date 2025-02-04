@@ -6,6 +6,7 @@ import { useWordsQuery, useCompleteWordStatusQuery, wordsApi } from 'features/ap
 import "./../../css/Word_translate.scss"
 import { useDispatch } from 'react-redux';
 import { increment } from '../../app/store';
+import { postWordCheckResult } from '../../app/store';
 import { store } from '../../app/store';
 
 export default function Word_translate() {
@@ -42,8 +43,10 @@ export default function Word_translate() {
     const wrong = answerVal != currentWord.word_rus;
 
     setShowResolve(false);
-    const objPercent = { word: currentWord.word_eng, wrong: wrong };
+    const objPercent = { id: currentWord.id, wrong: wrong };
     store.dispatch(increment(objPercent));
+    const obj={id:currentWord.id,wrong:wrong};
+    store.dispatch(postWordCheckResult(obj));
 
     const wordRemove = wordsLocal.indexOf(currentWord);
     wordsLocal = wordsLocal.filter((x, i) => wordRemove != i);
